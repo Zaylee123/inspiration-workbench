@@ -1212,32 +1212,60 @@ async function fetchNews(force){
   saveStore();
   renderNews();
 
-  // 抓取实时 RSS(双中转保障:rss2json 主,allorigins 备)
+  // 抓取实时资讯: 同时走两条路
+  // 路线A: 读同域名 news.json (GitHub Actions 每6小时自动更新,无跨域)
+  // 路线B: 浏览器在线抓 RSS (多中转保障,能抓多少抓多少)
   let fetched = 0;
+
+  // 路线A: 读 news.json
+  try{
+    const localResp = await fetch('./news.json?t='+Date.now(), {cache:'no-store'});
+    if(localResp.ok){
+      const localItems = await localResp.json();
+      if(Array.isArray(localItems) && localItems.length > 0){
+        for(const item of localItems){
+          const title = (item.title||'').trim();
+          if(title.length < 4 || title.length > 100) continue;
+          if(store.news.some(n=>n.title===title)) continue;
+          const desc = (item.summary||'').replace(/<[^>]*>/g,'').replace(/&[^;]+;/g,'').trim().slice(0,200);
+          store.news.unshift({
+            id:'n_rss_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),
+            source:item.source||'资讯', title:title, summary:desc,
+            url:item.url||'', tags:newsAutoTags(title+desc),
+            favorited:false, favTags:[],
+            createdAt: new Date().toISOString(), manual:false
+          });
+          fetched++;
+        }
+      }
+    }
+  }catch(e){}
+
+  // 路线B: 在线 RSS (4个中转轮询,哪个通就用哪个)
   for(const src of RSS_SOURCES){
     let items = null;
-    // 方案1: rss2json.com
-    try{
-      const apiUrl = 'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(src.rss);
-      const ctrl = new AbortController();
-      const t = setTimeout(function(){ ctrl.abort(); }, 8000);
-      const resp = await fetch(apiUrl, {signal: ctrl.signal});
-      clearTimeout(t);
-      if(resp.ok){
-        const data = await resp.json();
-        if(data.status === 'ok' && data.items) items = data.items;
-      }
-    }catch(e){}
-    // 方案2: allorigins.win (备用,解析原始 XML)
-    if(!items){
+    const proxies = [
+      function(rss){ return 'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(rss); },
+      function(rss){ return 'https://api.allorigins.win/raw?url='+encodeURIComponent(rss); },
+      function(rss){ return 'https://corsproxy.io/?'+encodeURIComponent(rss); },
+      function(rss){ return 'https://api.codetabs.com/v1/proxy/?quest='+encodeURIComponent(rss); },
+    ];
+    for(let pi=0; pi<proxies.length && !items; pi++){
       try{
-        const proxyUrl = 'https://api.allorigins.win/raw?url='+encodeURIComponent(src.rss);
-        const ctrl2 = new AbortController();
-        const t2 = setTimeout(function(){ ctrl2.abort(); }, 8000);
-        const resp2 = await fetch(proxyUrl, {signal: ctrl2.signal});
-        clearTimeout(t2);
-        if(resp2.ok){
-          const xmlText = await resp2.text();
+        const proxyUrl = proxies[pi](src.rss);
+        const ctrl = new AbortController();
+        const t = setTimeout(function(){ ctrl.abort(); }, 6000);
+        const resp = await fetch(proxyUrl, {signal: ctrl.signal});
+        clearTimeout(t);
+        if(!resp.ok) continue;
+
+        if(pi === 0){
+          // rss2json 返回 JSON
+          const data = await resp.json();
+          if(data.status === 'ok' && data.items) items = data.items;
+        } else {
+          // 其他代理返回原始 XML,需要解析
+          const xmlText = await resp.text();
           const doc = new DOMParser().parseFromString(xmlText, 'text/xml');
           const entries = doc.querySelectorAll('item, entry');
           if(entries.length > 0){
@@ -1280,7 +1308,7 @@ async function fetchNews(force){
   isFetchingNews = false;
   saveStore();
   renderNews();
-  if(force) toast(fetched>0 ? '抓到 '+fetched+' 条实时资讯' : 'RSS 源暂时没响应,先看看预设内容','yellow');
+  if(force) toast(fetched>0 ? '抓到 '+fetched+' 条最新资讯' : 'RSS 源暂时没响应,稍后再试','yellow');
 }
 
 function newsAutoTags(text){
