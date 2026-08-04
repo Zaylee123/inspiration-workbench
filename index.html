@@ -1194,6 +1194,11 @@ async function fetchNews(force){
   if(isFetchingNews) return;
   isFetchingNews = true;
 
+  // 手动刷新时,清理旧的自动资讯(保留手动添加和已收藏的)
+  if(force){
+    store.news = store.news.filter(n => n.manual || n.favorited);
+  }
+
   // 先注入兜底资讯(保证不空屏)
   const existingTitles = new Set(store.news.map(n=>n.title));
   FALLBACK_NEWS.forEach(n=>{
