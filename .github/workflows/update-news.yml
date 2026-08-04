@@ -1,0 +1,143 @@
+name: Update News
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-news:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch RSS and generate news.json
+        run: |
+          python3 << 'PYEOF'
+          import urllib.request
+          import json
+          import re
+          from xml.etree import ElementTree as ET
+          from datetime import datetime, timezone
+
+          sources = [
+              ('少数派', 'https://sspai.com/feed'),
+              ('36氪', 'https://36kr.com/feed'),
+              ('爱范儿', 'https://www.ifanr.com/feed'),
+              ('IT之家', 'https://www.ithome.com/rss/'),
+              ('知乎日报', 'https://news-at.zhihu.com/api/4/news/latest'),
+          ]
+
+          items = []
+
+          for name, url in sources:
+              try:
+                  req = urllib.request.Request(url, headers={
+                      'User-Agent': 'Mozilla/5.0 (compatible; NewsBot/1.0)'
+                  })
+                  with urllib.request.urlopen(req, timeout=15) as resp:
+                      raw = resp.read().decode('utf-8', errors='ignore')
+
+                  # Try parsing as XML (RSS/Atom)
+                  try:
+                      root = ET.fromstring(raw)
+                      ns = {}
+                      for elem in root.iter():
+                          tag = elem.tag
+                          if '}' in tag:
+                              uri = tag.split('}')[0][1:]
+                              if uri not in ns:
+                                  ns[uri] = 'ns' + str(len(ns))
+
+                      def find_all(elem, tag_names):
+                          results = []
+                          for tag in tag_names:
+                              results.extend(elem.iter(tag))
+                              for ns_uri, ns_prefix in ns.items():
+                                  results.extend(elem.iter('{%s}%s' % (ns_uri, tag)))
+                          return results
+
+                      entries = find_all(root, ['item', 'entry'])
+                      for entry in entries[:8]:
+                          title = ''
+                          link = ''
+                          desc = ''
+
+                          for t in find_all(entry, ['title']):
+                              title = (t.text or '').strip()
+                              if title:
+                                  break
+
+                          for l in find_all(entry, ['link']):
+                              link = l.text or ''
+                              if not link:
+                                  link = l.get('href', '')
+                              if link:
+                                  break
+
+                          for d in find_all(entry, ['description', 'summary', 'content']):
+                              desc = (d.text or '').strip()
+                              if desc:
+                                  break
+
+                          desc = re.sub(r'<[^>]+>', '', desc)
+                          desc = re.sub(r'&[^;]+;', '', desc).strip()[:200]
+                          title = re.sub(r'<[^>]+>', '', title).strip()
+
+                          if 4 <= len(title) <= 100:
+                              items.append({
+                                  'source': name,
+                                  'title': title,
+                                  'summary': desc,
+                                  'url': link,
+                                  'createdAt': datetime.now(timezone.utc).isoformat()
+                              })
+                  except ET.ParseError:
+                      # Try JSON (for Zhihu API)
+                      try:
+                          data = json.loads(raw)
+                          if isinstance(data, dict) and 'stories' in data:
+                              for story in data['stories'][:8]:
+                                  title = story.get('title', '').strip()
+                                  if 4 <= len(title) <= 100:
+                                      items.append({
+                                          'source': name,
+                                          'title': title,
+                                          'summary': '',
+                                          'url': story.get('url', ''),
+                                          'createdAt': datetime.now(timezone.utc).isoformat()
+                                      })
+                      except json.JSONDecodeError:
+                          pass
+
+              except Exception as e:
+                  print('Failed to fetch %s: %s' % (name, e))
+
+          # Deduplicate by title
+          seen = set()
+          unique = []
+          for item in items:
+              if item['title'] not in seen:
+                  seen.add(item['title'])
+                  unique.append(item)
+
+          with open('news.json', 'w', encoding='utf-8') as f:
+              json.dump(unique[:40], f, ensure_ascii=False, indent=2)
+
+          print('Generated news.json with %d items' % len(unique))
+          PYEOF
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add news.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto-update news.json ($(date -u '+%Y-%m-%d %H:%M UTC'))"
+            git push
+          fi
