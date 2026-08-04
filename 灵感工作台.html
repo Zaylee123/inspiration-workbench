@@ -8,7 +8,7 @@
 /* ========== 重置和全局 ========== */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#f5f5f7;--bg2:#ffffff;--card:#ffffff;--card2:#f9f9fb;
+  --bg:#f6f3ee;--bg2:#ffffff;--card:#ffffff;--card2:#f9f9fb;
   --text:#1d1d1f;--text2:#86868b;--text3:#aeaeb2;
   --accent:#007aff;--accent2:#5856d6;
   --green:#34c759;--yellow:#ff9f0a;--blue:#007aff;--purple:#af52de;
@@ -21,7 +21,7 @@
   --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
 }
 html,body{height:auto;min-height:100%;overflow-x:hidden;overflow-y:auto;-webkit-text-size-adjust:100%}
-body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{background:linear-gradient(180deg,#f8f5f0 0%,#efe8df 100%);background-attachment:fixed;color:var(--text);font-family:var(--font);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 button{cursor:pointer;font-family:inherit;border:none;outline:none;background:none;color:inherit}
 input,textarea{font-family:inherit;outline:none;border:none;-webkit-appearance:none}
 a{color:var(--accent);text-decoration:none}
@@ -30,8 +30,34 @@ a{color:var(--accent);text-decoration:none}
 ::-webkit-scrollbar-thumb{background:rgba(60,60,67,0.18);border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:rgba(60,60,67,0.32)}
 
+/* ========== 密码门 ========== */
+#lock-screen{position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#f5f5f7 0%,#e8e8ed 100%);display:flex;align-items:center;justify-content:center;padding:20px}
+#lock-screen.hidden{display:none}
+.lock-card{background:rgba(255,255,255,0.8);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-radius:28px;padding:36px 28px 28px;box-shadow:0 20px 60px rgba(0,0,0,0.12),0 2px 8px rgba(0,0,0,0.06);border:0.5px solid rgba(255,255,255,0.6);text-align:center;max-width:320px;width:100%}
+.lock-emoji{font-size:48px;margin-bottom:8px}
+.lock-title{font-size:22px;font-weight:700;color:var(--text);letter-spacing:-0.4px;margin-bottom:4px}
+.lock-sub{font-size:13px;color:var(--text2);margin-bottom:22px}
+.lock-dots{display:flex;gap:12px;justify-content:center;margin-bottom:24px}
+.lock-dots span{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--text3);transition:all 0.2s}
+.lock-dots span.filled{background:var(--accent);border-color:var(--accent);transform:scale(1.1)}
+.lock-dots.shake{animation:lockShake 0.4s}
+@keyframes lockShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+.lock-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.lock-keypad .kp{background:rgba(255,255,255,0.7);border-radius:50%;aspect-ratio:1;font-size:24px;font-weight:500;color:var(--text);transition:all 0.12s;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.lock-keypad .kp:active{transform:scale(0.92);background:var(--accent);color:#fff}
+.lock-keypad .kp-blank{background:transparent;box-shadow:none;pointer-events:none}
+.lock-keypad .kp-del{font-size:22px;background:rgba(120,120,128,0.1);box-shadow:none}
+.lock-keypad .kp-del:active{background:rgba(120,120,128,0.2);color:var(--text)}
+.lock-err{font-size:12px;color:var(--pink);min-height:16px}
+
+/* 应用内页脚(重置入口,解锁后才可见) */
+.app-footer{text-align:center;padding:24px 0 8px}
+.footer-reset{font-size:12px;color:var(--text3);opacity:0.6;transition:opacity 0.2s}
+.footer-reset:hover{opacity:1;text-decoration:underline}
+
 /* ========== 布局:整页滚动 + iOS 分组 ========== */
-#app{max-width:1100px;margin:0 auto;min-height:100vh;padding:0 24px 56px;position:relative}
+#app{max-width:1100px;margin:0 auto;min-height:100vh;padding:0 24px 56px;position:relative;animation:appFade .5s ease both}
+@keyframes appFade{from{opacity:0}to{opacity:1}}
 @media(min-width:1200px){ #app{max-width:1100px;padding:0 48px 56px} }
 
 /* 顶部导航(iOS 大标题 + 毛玻璃吸顶) */
@@ -46,7 +72,7 @@ a{color:var(--accent);text-decoration:none}
 .section-label .hint{font-size:12px;font-weight:500;color:var(--text2);text-align:right;flex-shrink:0}
 
 /* iOS 分组卡片 */
-.group{background:var(--card);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow)}
+.group{background:var(--card);border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,0.04),0 12px 32px rgba(0,0,0,0.06);border:0.5px solid rgba(0,0,0,0.05)}
 .group + .group{margin-top:14px}
 .group-inset{padding:6px 0}
 
@@ -97,8 +123,9 @@ a{color:var(--accent);text-decoration:none}
 
 /* ========== 备忘列表 ========== */
 #memo-list{padding:10px 12px;overflow-y:auto;flex:1}
-.memo-item{background:var(--card2);border:1px solid transparent;border-radius:12px;padding:12px 14px;margin-bottom:8px;transition:transform 0.12s,box-shadow 0.2s;box-shadow:var(--shadow-sm);position:relative}
-.memo-item:active{transform:scale(0.985)}
+.memo-item{background:var(--card2);border:0.5px solid var(--separator2);border-radius:12px;padding:12px 14px;margin-bottom:8px;transition:background 0.18s,box-shadow 0.2s;box-shadow:var(--shadow-sm);position:relative}
+.memo-item:hover{background:#f1f1f6}
+.memo-item:active{transform:scale(0.985);transition:transform 0.08s}
 .memo-item.starred{box-shadow:inset 3px 0 0 var(--yellow)}
 .memo-item.starred{background:linear-gradient(90deg,rgba(255,159,10,0.08),var(--card2) 40%)}
 .memo-text{font-size:14px;color:var(--text);word-break:break-word;white-space:pre-wrap}
@@ -123,8 +150,9 @@ a{color:var(--accent);text-decoration:none}
 .news-filter .chip{font-size:12px;padding:4px 10px;border-radius:8px;background:rgba(120,120,128,0.08);cursor:pointer;transition:all 0.15s;color:var(--text)}
 .news-filter .chip:hover{background:rgba(120,120,128,0.16)}
 .news-filter .chip.active{background:var(--accent);color:#fff}
-.news-card{background:var(--card2);border:1px solid transparent;border-radius:12px;padding:13px 15px;margin-bottom:8px;transition:transform 0.12s,box-shadow 0.2s;box-shadow:var(--shadow-sm)}
-.news-card:active{transform:scale(0.99)}
+.news-card{background:var(--card2);border:0.5px solid var(--separator2);border-radius:12px;padding:13px 15px;margin-bottom:8px;transition:background 0.18s,box-shadow 0.2s;box-shadow:var(--shadow-sm)}
+.news-card:hover{background:#f1f1f6}
+.news-card:active{transform:scale(0.99);transition:transform 0.08s}
 .news-card.favorited{box-shadow:inset 3px 0 0 var(--accent)}
 .news-source{font-size:11px;color:var(--text2);font-weight:500}
 .news-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
@@ -236,8 +264,9 @@ a{color:var(--accent);text-decoration:none}
 #period-section .ps-btn:active{transform:scale(0.97)}
 #period-section .ps-btn.ghost{background:rgba(120,120,128,0.1);color:var(--text2)}
 #period-section .ps-btn.ghost:hover{background:rgba(120,120,128,0.18)}
-.ps-status{background:var(--card2);border-radius:14px;padding:14px 16px;margin-top:4px}
-.ps-status .ps-line{display:flex;justify-content:space-between;font-size:13px;padding:4px 0}
+.ps-status{background:var(--card2);border-radius:14px;padding:6px 16px;margin-top:4px}
+.ps-status .ps-line{display:flex;justify-content:space-between;font-size:13px;padding:10px 0;border-bottom:0.5px solid var(--separator2)}
+.ps-status .ps-line:last-of-type{border-bottom:none}
 .ps-status .ps-label{color:var(--text2)}
 .ps-status .ps-val{color:var(--text);font-weight:600}
 .ps-status .ps-val.pink{color:var(--pink)}
@@ -256,7 +285,7 @@ a{color:var(--accent);text-decoration:none}
 .ps-calendar .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
 .ps-calendar .cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:11px;border-radius:4px;cursor:default;position:relative;color:var(--text)}
 .ps-calendar .cal-day.other-month{color:var(--text3);opacity:0.4}
-.ps-calendar .cal-day.today{font-weight:800;color:var(--accent);box-shadow:inset 0 0 0 1.5px var(--accent)}
+.ps-calendar .cal-day.today{font-weight:700;color:#fff;background:var(--accent);box-shadow:0 2px 8px rgba(0,122,255,0.4)}
 .ps-calendar .cal-day.period-day{background:rgba(255,45,85,0.18);color:var(--pink);font-weight:600}
 .ps-calendar .cal-day.period-day.period-start{border-radius:4px 0 0 4px}
 .ps-calendar .cal-day.period-day.period-end{border-radius:0 4px 4px 0}
@@ -300,10 +329,30 @@ a{color:var(--accent);text-decoration:none}
   #memo-list{padding:10px 10px}
   body{font-size:14px}
   .news-card .drag-handle{display:none}
+  .twin-news-list{max-height:56vh;overflow-y:auto}
 }
 </style>
 </head>
 <body>
+<!-- ========== 密码门 ========== -->
+<div id="lock-screen">
+  <div class="lock-card">
+    <div class="lock-emoji">🔒</div>
+    <div class="lock-title">灵感工作台</div>
+    <div class="lock-sub" id="lock-sub">输入 6 位数字密码</div>
+    <div class="lock-dots" id="lock-dots">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="lock-keypad" id="lock-keypad">
+      <button class="kp">1</button><button class="kp">2</button><button class="kp">3</button>
+      <button class="kp">4</button><button class="kp">5</button><button class="kp">6</button>
+      <button class="kp">7</button><button class="kp">8</button><button class="kp">9</button>
+      <button class="kp kp-blank"></button><button class="kp">0</button><button class="kp kp-del">⌫</button>
+    </div>
+    <div class="lock-err" id="lock-err"></div>
+  </div>
+</div>
+
 <div id="app">
   <header id="top-nav">
     <div class="nav-inner">
@@ -422,6 +471,9 @@ a{color:var(--accent);text-decoration:none}
       </div>
     </section>
   </main>
+  <footer class="app-footer">
+    <button class="footer-reset" id="footer-reset">重置密码 / 清空本地数据</button>
+  </footer>
 </div>
 <div id="toast-container"></div>
 
@@ -439,7 +491,8 @@ let store = {
   chatHistory: [],  // {role,content,createdAt}
   chatSummary: '',  // 跨次对话的记忆摘要
   newsFetchDate: '',// 上次自动抓取日期
-  periods: []       // {id,date:ISO,endDate:ISO|null,createdAt} 月经记录
+  periods: [],      // {id,date:ISO,endDate:ISO|null,createdAt} 月经记录
+  aiToken: ''       // 智谱 API key(加密存储)
 };
 
 // 标签颜色池
@@ -449,19 +502,263 @@ function tagColor(tag){
   return TAG_COLORS[h];
 }
 
-// ====== 本地存储 ======
-function loadStore(){
+// ====== 本地存储(加密) ======
+// 密码派生密钥(PBKDF2) + AES-GCM 加密,localStorage 里只存密文
+const SALT_KEY = 'inspire_salt_v1';
+const VERIFY_KEY = 'inspire_verify_v1';
+const TOKEN_ENC_KEY = 'inspire_token_enc_v1';
+
+let sessionKey = null;   // 解锁后内存中保存的派生密钥
+let sessionSalt = null;  // Uint8Array
+
+function bufToB64(buf){
+  const bytes = new Uint8Array(buf);
+  let bin=''; for(let i=0;i<bytes.length;i++) bin+=String.fromCharCode(bytes[i]);
+  return btoa(bin);
+}
+function b64ToBuf(b64){
+  const bin = atob(b64);
+  const bytes = new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+  return bytes.buffer;
+}
+function genSalt(){ return crypto.getRandomValues(new Uint8Array(16)); }
+
+async function deriveKey(password, saltBytes){
+  const enc = new TextEncoder();
+  const baseKey = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey(
+    {name:'PBKDF2', salt: saltBytes, iterations: 100000, hash:'SHA-256'},
+    baseKey,
+    {name:'AES-GCM', length:256},
+    false,
+    ['encrypt','decrypt']
+  );
+}
+async function aesEncrypt(key, obj){
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const enc = new TextEncoder();
+  const data = enc.encode(JSON.stringify(obj));
+  const ct = await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, data);
+  const combined = new Uint8Array(iv.length + ct.byteLength);
+  combined.set(iv, 0);
+  combined.set(new Uint8Array(ct), iv.length);
+  return bufToB64(combined.buffer);
+}
+async function aesDecrypt(key, b64){
+  const combined = new Uint8Array(b64ToBuf(b64));
+  const iv = combined.slice(0,12);
+  const ct = combined.slice(12);
+  const pt = await crypto.subtle.decrypt({name:'AES-GCM', iv}, key, ct);
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+
+// 把内存中的 store + aiToken 加密写回
+async function persistAll(){
+  if(!sessionKey) return;
+  try{
+    localStorage.setItem(STORE_KEY, await aesEncrypt(sessionKey, store));
+    if(store.aiToken){
+      localStorage.setItem(TOKEN_ENC_KEY, await aesEncrypt(sessionKey, store.aiToken));
+    }else{
+      localStorage.removeItem(TOKEN_ENC_KEY);
+    }
+  }catch(e){ console.warn('save failed',e); }
+}
+function saveStore(){ persistAll(); } // 异步,调用处无需等待
+
+// 解锁后:把密文解密进内存
+async function loadStoreEnc(){
+  const blob = localStorage.getItem(STORE_KEY);
+  if(blob){
+    try{ const data = await aesDecrypt(sessionKey, blob); store = {...store, ...data}; }
+    catch(e){ console.warn('解密失败', e); }
+  }
+  const tok = localStorage.getItem(TOKEN_ENC_KEY);
+  if(tok){
+    try{ store.aiToken = await aesDecrypt(sessionKey, tok); }catch(e){ store.aiToken=''; }
+  }else{ store.aiToken=''; }
+}
+
+// ========== 密码门逻辑 ==========
+let pwdInput = '';
+let pwdMode = 'enter'; // enter | setup | confirm
+let pwdSetupTmp = '';
+
+function hasPassword(){ return !!localStorage.getItem(SALT_KEY) && !!localStorage.getItem(VERIFY_KEY); }
+
+async function setupPassword(pwd){
+  migrateOldData();    // 把旧版明文数据迁进来(若有)
+  sessionSalt = genSalt();
+  sessionKey = await deriveKey(pwd, sessionSalt);
+  localStorage.setItem(SALT_KEY, bufToB64(sessionSalt.buffer));
+  localStorage.setItem(VERIFY_KEY, await aesEncrypt(sessionKey, {m:'inspire-ok'}));
+  await persistAll();   // 加密写回(含迁移来的数据)
+  await enterApp();
+}
+
+// 迁移旧版(未加密)数据:旧 STORE_KEY 是明文 JSON,ai_token 也是明文
+function migrateOldData(){
   try{
     const raw = localStorage.getItem(STORE_KEY);
     if(raw){
       const data = JSON.parse(raw);
-      store = {...store, ...data};
+      if(data && typeof data === 'object'){ store = {...store, ...data}; }
     }
-  }catch(e){ console.warn('load failed',e); }
+  }catch(e){}
+  try{
+    const oldTok = localStorage.getItem('ai_token');
+    if(oldTok){ store.aiToken = oldTok; }
+  }catch(e){}
+  localStorage.removeItem('ai_token');        // 旧明文 key
+  localStorage.removeItem('inspire_pwd_hash'); // 旧明文密码 hash
 }
-function saveStore(){
-  try{ localStorage.setItem(STORE_KEY, JSON.stringify(store)); }
-  catch(e){ console.warn('save failed',e); }
+
+async function tryUnlock(pwd){
+  const saltB64 = localStorage.getItem(SALT_KEY);
+  const verifyB64 = localStorage.getItem(VERIFY_KEY);
+  if(!saltB64 || !verifyB64) return false;
+  const saltBytes = new Uint8Array(b64ToBuf(saltB64));
+  const key = await deriveKey(pwd, saltBytes);
+  try{
+    const dec = await aesDecrypt(key, verifyB64);
+    if(dec && dec.m === 'inspire-ok'){
+      sessionKey = key;
+      sessionSalt = saltBytes;
+      return true;
+    }
+  }catch(e){}
+  return false;
+}
+
+function updateLockDots(){
+  document.querySelectorAll('#lock-dots span').forEach(function(d,i){
+    d.classList.toggle('filled', i < pwdInput.length);
+  });
+}
+
+function setLockSub(text){ document.getElementById('lock-sub').textContent = text; }
+function showLockErr(msg){
+  const el = document.getElementById('lock-err');
+  el.textContent = msg;
+  if(msg){
+    setTimeout(function(){ if(el.textContent===msg) el.textContent=''; }, 2000);
+  }
+}
+
+function handlePwdKey(key){
+  showLockErr('');
+  if(key === 'del'){
+    pwdInput = pwdInput.slice(0, -1);
+    updateLockDots();
+    return;
+  }
+  if(!/[0-9]/.test(key)) return;
+  if(pwdInput.length >= 6) return;
+  pwdInput += key;
+  updateLockDots();
+  if(pwdInput.length === 6){
+    setTimeout(submitPwd, 120);
+  }
+}
+
+async function submitPwd(){
+  if(pwdMode === 'setup'){
+    pwdSetupTmp = pwdInput;
+    pwdInput = '';
+    pwdMode = 'confirm';
+    updateLockDots();
+    setLockSub('再输一次确认密码');
+    return;
+  }
+  if(pwdMode === 'confirm'){
+    if(pwdInput === pwdSetupTmp){
+      const pwd = pwdInput;
+      pwdInput = ''; pwdSetupTmp = '';
+      setLockSub('正在加密保存…');
+      await setupPassword(pwd);
+    }else{
+      shakeLock();
+      showLockErr('两次不一致,重来');
+      pwdInput = ''; pwdSetupTmp = '';
+      pwdMode = 'setup';
+      updateLockDots();
+      setLockSub('设置 6 位数字密码');
+    }
+    return;
+  }
+  // enter 模式
+  const pwd = pwdInput;
+  setLockSub('验证中…');
+  const ok = await tryUnlock(pwd);
+  if(ok){
+    pwdInput = '';
+    await enterApp();
+  }else{
+    shakeLock();
+    showLockErr('密码不对');
+    pwdInput = '';
+    updateLockDots();
+    setLockSub('输入 6 位数字密码');
+  }
+}
+
+function shakeLock(){
+  const dots = document.getElementById('lock-dots');
+  dots.classList.add('shake');
+  setTimeout(function(){ dots.classList.remove('shake'); }, 400);
+}
+
+async function enterApp(){
+  document.getElementById('lock-screen').classList.add('hidden');
+  await loadStoreEnc();
+  await startApp();
+}
+
+function initLockScreen(){
+  const screen = document.getElementById('lock-screen');
+  const keypad = document.getElementById('lock-keypad');
+
+  if(!hasPassword()){
+    pwdMode = 'setup';
+    setLockSub('设置 6 位数字密码');
+  }else{
+    pwdMode = 'enter';
+    setLockSub('输入 6 位数字密码');
+  }
+
+  keypad.addEventListener('click', function(e){
+    const btn = e.target.closest('.kp');
+    if(!btn || btn.classList.contains('kp-blank')) return;
+    if(btn.classList.contains('kp-del')){
+      handlePwdKey('del');
+    }else{
+      handlePwdKey(btn.textContent.trim());
+    }
+  });
+
+  // 键盘输入支持
+  document.addEventListener('keydown', function(e){
+    if(!screen.classList.contains('hidden')){
+      if(e.key >= '0' && e.key <= '9'){ handlePwdKey(e.key); }
+      else if(e.key === 'Backspace'){ handlePwdKey('del'); }
+      else if(e.key === 'Enter' && pwdInput.length === 6){ submitPwd(); }
+    }
+  });
+
+  // 重置密码(清除所有数据) —— 入口移到应用内页脚,不在首页
+  const footerReset = document.getElementById('footer-reset');
+  if(footerReset){
+    footerReset.onclick = function(){
+      if(confirm('重置密码会清空所有本地数据(备忘/资讯/周期/AI记录),且无法恢复。确定吗?')){
+        localStorage.removeItem(SALT_KEY);
+        localStorage.removeItem(VERIFY_KEY);
+        localStorage.removeItem(STORE_KEY);
+        localStorage.removeItem(TOKEN_ENC_KEY);
+        location.reload();
+      }
+    };
+  }
 }
 
 // ====== Toast 提示 ======
@@ -499,7 +796,7 @@ const AI_MODEL = 'glm-4-flash';
 let lastAIError = null; // 记录最近一次 AI 调用失败的原因,供提示用
 
 async function callAI(messages, systemPrompt, maxTokens){
-  const token = localStorage.getItem('ai_token') || '';
+  const token = store.aiToken || '';
   if(!token){
     // 用户没配token,直接返回null让降级逻辑接管
     return null;
@@ -1253,7 +1550,7 @@ async function sendMessage(){
   if(reply){
     store.chatHistory.push({role:'assistant', content:reply, createdAt:new Date().toISOString()});
   }else{
-    const tokenSet = !!localStorage.getItem('ai_token');
+    const tokenSet = !!store.aiToken;
     let msg;
     if(!tokenSet){
       msg = '还没接上AI——点"接AI",填上智谱的 key 我就能开聊。';
@@ -1349,7 +1646,7 @@ function forgetChat(){
 function updateConnectBtn(){
   const btn = document.getElementById('ai-connect-btn');
   if(!btn) return;
-  if(localStorage.getItem('ai_token')){
+  if(store.aiToken){
     btn.classList.add('connected');
     btn.textContent = '✓ AI已接';
     btn.title = '点开重新设置或清除';
@@ -1361,7 +1658,7 @@ function updateConnectBtn(){
 }
 
 function showTokenModal(){
-  const current = localStorage.getItem('ai_token') || '';
+  const current = store.aiToken || '';
   const modal = document.createElement('div');
   modal.className = 'ai-token-modal';
   modal.innerHTML = `
@@ -1393,8 +1690,9 @@ function showTokenModal(){
   };
   document.getElementById('ai-token-save').onclick = ()=>{
     const v = document.getElementById('ai-token-input').value.trim();
-    if(v){ localStorage.setItem('ai_token', v); toast('AI 接上了,开聊吧','green'); }
-    else { localStorage.removeItem('ai_token'); toast('AI 已断开','yellow'); }
+    store.aiToken = v || '';
+    saveStore();
+    toast(v ? 'AI 接上了,开聊吧' : 'AI 已断开', v ? 'green' : 'yellow');
     updateConnectBtn();
     modal.remove();
   };
@@ -1694,8 +1992,6 @@ function checkPeriodReminder(){
 }
 
 function init(){
-  loadStore();
-
   // 备忘录入
   document.getElementById('memo-add-btn').onclick = addMemo;
   // 双击回车(500ms内连按两次)才提交,单次回车正常换行
@@ -1779,28 +2075,6 @@ function init(){
   document.getElementById('period-date-input').value = new Date().toISOString().slice(0,10);
   document.getElementById('period-end-input').value = '';
 
-  // 初始渲染
-  renderMemos();
-  renderTodoBar();
-  renderChat();
-  renderNews();
-  renderPeriod();
-
-  // 抓取资讯
-  fetchNews();
-
-  // 提醒检查(每30秒)
-  checkReminders();
-  setInterval(checkReminders, 30000);
-
-  // 请求通知权限
-  if('Notification' in window && Notification.permission==='default'){
-    Notification.requestPermission();
-  }
-
-  // 默认聚焦输入框
-  setTimeout(()=>document.getElementById('memo-input').focus(), 200);
-
   // 拖拽:AI区接收资讯
   const aiCol = document.getElementById('twin-ai');
   if(aiCol){
@@ -1813,6 +2087,26 @@ function init(){
     });
     aiCol.addEventListener('dragleave', function(){ aiCol.classList.remove('drop-target-active'); });
   }
+
+  // 密码门(盖在所有内容之上);解锁后由 enterApp 调用 startApp 渲染
+  initLockScreen();
+}
+
+// 解锁成功后:解密数据并渲染启动各项功能
+async function startApp(){
+  updateConnectBtn();
+  renderMemos();
+  renderTodoBar();
+  renderChat();
+  renderNews();
+  renderPeriod();
+  fetchNews();
+  checkReminders();
+  setInterval(checkReminders, 30000);
+  if('Notification' in window && Notification.permission==='default'){
+    Notification.requestPermission();
+  }
+  setTimeout(()=>document.getElementById('memo-input').focus(), 200);
 }
 
 // 暴露到全局
