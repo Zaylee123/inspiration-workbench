@@ -1212,39 +1212,75 @@ async function fetchNews(force){
   saveStore();
   renderNews();
 
-  // 通过 rss2json.com 抓取实时 RSS(支持 CORS,* 通配)
+  // 抓取实时 RSS(双中转保障:rss2json 主,allorigins 备)
   let fetched = 0;
   for(const src of RSS_SOURCES){
+    let items = null;
+    // 方案1: rss2json.com
     try{
       const apiUrl = 'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(src.rss);
       const ctrl = new AbortController();
-      const t = setTimeout(function(){ ctrl.abort(); }, 10000);
+      const t = setTimeout(function(){ ctrl.abort(); }, 8000);
       const resp = await fetch(apiUrl, {signal: ctrl.signal});
       clearTimeout(t);
-      if(!resp.ok) continue;
-      const data = await resp.json();
-      if(data.status !== 'ok' || !data.items) continue;
-      for(const item of data.items){
-        const title = (item.title||'').trim();
-        if(title.length < 4 || title.length > 100) continue;
-        if(store.news.some(n=>n.title===title)) continue;
-        const desc = (item.description||'').replace(/<[^>]*>/g,'').replace(/&[^;]+;/g,'').trim().slice(0,200);
-        store.news.unshift({
-          id:'n_rss_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),
-          source:src.name, title:title, summary:desc,
-          url:item.link||'', tags:newsAutoTags(title+desc),
-          favorited:false, favTags:[],
-          createdAt: new Date().toISOString(), manual:false
-        });
-        fetched++;
+      if(resp.ok){
+        const data = await resp.json();
+        if(data.status === 'ok' && data.items) items = data.items;
       }
     }catch(e){}
+    // 方案2: allorigins.win (备用,解析原始 XML)
+    if(!items){
+      try{
+        const proxyUrl = 'https://api.allorigins.win/raw?url='+encodeURIComponent(src.rss);
+        const ctrl2 = new AbortController();
+        const t2 = setTimeout(function(){ ctrl2.abort(); }, 8000);
+        const resp2 = await fetch(proxyUrl, {signal: ctrl2.signal});
+        clearTimeout(t2);
+        if(resp2.ok){
+          const xmlText = await resp2.text();
+          const doc = new DOMParser().parseFromString(xmlText, 'text/xml');
+          const entries = doc.querySelectorAll('item, entry');
+          if(entries.length > 0){
+            items = [];
+            entries.forEach(function(entry){
+              var titleEl = entry.querySelector('title');
+              var linkEl = entry.querySelector('link');
+              var descEl = entry.querySelector('description, summary, content');
+              var link = '';
+              if(linkEl){
+                link = linkEl.textContent || (linkEl.getAttribute && linkEl.getAttribute('href')) || '';
+              }
+              items.push({
+                title: titleEl ? titleEl.textContent.trim() : '',
+                link: link,
+                description: descEl ? descEl.textContent : ''
+              });
+            });
+          }
+        }
+      }catch(e){}
+    }
+    if(!items) continue;
+    for(const item of items){
+      const title = (item.title||'').trim();
+      if(title.length < 4 || title.length > 100) continue;
+      if(store.news.some(n=>n.title===title)) continue;
+      const desc = (item.description||'').replace(/<[^>]*>/g,'').replace(/&[^;]+;/g,'').trim().slice(0,200);
+      store.news.unshift({
+        id:'n_rss_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),
+        source:src.name, title:title, summary:desc,
+        url:item.link||'', tags:newsAutoTags(title+desc),
+        favorited:false, favTags:[],
+        createdAt: new Date().toISOString(), manual:false
+      });
+      fetched++;
+    }
   }
 
   isFetchingNews = false;
   saveStore();
   renderNews();
-  if(force) toast(fetched>0 ? '抓到 '+fetched+' 条实时资讯' : '网络没拉到,显示预设内容','yellow');
+  if(force) toast(fetched>0 ? '抓到 '+fetched+' 条实时资讯' : 'RSS 源暂时没响应,先看看预设内容','yellow');
 }
 
 function newsAutoTags(text){
