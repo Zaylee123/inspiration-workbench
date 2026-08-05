@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231a2847'/><g transform='translate(50,52) rotate(-20)'><path d='M0,-28 C-8,-18 -12,-5 -10,8 C-8,16 -3,22 0,28 C3,22 8,16 10,8 C12,-5 8,-18 0,-28Z' fill='%23ffffff'/><path d='M-1.5,26 L0,38 L1.5,26Z' fill='%23ffffff'/><line x1='0' y1='-26' x2='0' y2='26' stroke='%231a2847' stroke-width='.6' opacity='.25'/><path d='M-3,-22 L-12,-26 M-3,-15 L-12,-17 M-4,-8 L-11,-8 M-4,-1 L-10,1 M-4,6 L-9,9 M-3,13 L-7,17 M-2,20 L-5,24' stroke='%23a0b4d0' stroke-width='.6' fill='none' stroke-linecap='round'/><path d='M3,-22 L12,-26 M3,-15 L12,-17 M4,-8 L11,-8 M4,-1 L10,1 M4,6 L9,9 M3,13 L7,17 M2,20 L5,24' stroke='%23a0b4d0' stroke-width='.6' fill='none' stroke-linecap='round'/></g></svg>">
-<link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231a2847'/><g transform='translate(50,52) rotate(-20)'><path d='M0,-28 C-8,-18 -12,-5 -10,8 C-8,16 -3,22 0,28 C3,22 8,16 10,8 C12,-5 8,-18 0,-28Z' fill='%23ffffff'/><path d='M-1.5,26 L0,38 L1.5,26Z' fill='%23ffffff'/><line x1='0' y1='-26' x2='0' y2='26' stroke='%231a2847' stroke-width='.6' opacity='.25'/><path d='M-3,-22 L-12,-26 M-3,-15 L-12,-17 M-4,-8 L-11,-8 M-4,-1 L-10,1 M-4,6 L-9,9 M-3,13 L-7,17 M-2,20 L-5,24' stroke='%23a0b4d0' stroke-width='.6' fill='none' stroke-linecap='round'/><path d='M3,-22 L12,-26 M3,-15 L12,-17 M4,-8 L11,-8 M4,-1 L10,1 M4,6 L9,9 M3,13 L7,17 M2,20 L5,24' stroke='%23a0b4d0' stroke-width='.6' fill='none' stroke-linecap='round'/></g></svg>">
-
-<rect width='100' height='100' rx='22' fill='%231a2847'/><g transform='translate(50 50) rotate(-25) translate(-50 -50)'><path d='M50 12C60 18 68 30 66 48 64 58 58 64 52 64 50 64 48 64 48 60L52 60C56 56 60 50 60 40 60 30 54 22 50 18Z' fill='%23fff'/><path d='M48 78L52 78 51 86 49 86Z' fill='%23fff'/><path d='M51 22L53 30M51 28L54 36M51 34L55 42M51 40L55 48M51 46L54 54M51 52L53 58' stroke='%23c8d0e0' stroke-width='.8' fill='none' stroke-linecap='round'/></g></svg>">
 <meta charset="UTF-8">
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAw0lEQVR4nO2UMQqEMBBFo+w9tpkipxC8s81Wwp7DZk+ijGxgikTN5E+q+SASIfnv/5iE4HK5XK6OWpbPzo/8NrQuum2/neh9uY40jTGe7zRnDMZi83mesuZdAFjr+s2amwOk6kvmpgCy+pK5GUBKLqsv6YUwzJ2Eq9rhDZAwkUfuzhwGwA3I8V3tcAD6J61NDwOQDdSkhwFwWk16GECLRotLpzvA00unyxZQxf5DATTpoQCa9BAA7c8HAwiNggBo95/nHnH5RlRBhDnfAAAAAElFTkSuQmCC">
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAEkUlEQVR4nO3dz20bRxTAYTr2LR2kAlZBQKdcUocKCFxG4AK2jlx8WsBVqAJ1kGOQYJRsIlmktP9mdubN911MCYZJ2D8/vN3lUqcTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB5fThV5Kfzz38d/RpY5/HhaxUtHfoiBBzX40GBH/KkQu7HY+Gwiz2ZiHksEPcPJf6axUypDrL+jxEypad1tgktZo7oI0vQYuaoTnYPWswc2cuuQYuZo7vZLWgxU0M/uwQtZmrpaHPQYmZPW3vaFLSYyWFLV0WuFEIpq4M2nclpbV+rghYzJazpzMpBKIKm76CtG5S0tDcTmlAWBW06c4Ql3ZnQhCJoQvl09AsgnuG3X1997/7zlyLPPfu+LvszcwO+u7u8+j3j+G1z3HPuQxQ0m0O+FvA1Kerz+fz0+PLLfZagrRyFfPt9WP0PWWvMdzND3iPmuRwUEibmxIQm24pROuZE0GSbyknJmBNBk3XFKH3cIGia3ZevETS7xHzUivE9QbNLzEeHPHHajjAxJ4ImTMyJoAkTcyJoFqs15kTQLJrONcecCJpTlJgTQXduCBRzIuiODcFiTgTdqSFgzImgmaWFmBNBd2hYMZ1bIWhCrBoTQXdmmDGdW405ETQ3tRZzIuiODAunc4sE3Ykh+KoxETRhYk4E3YFhwdtCW445ETSn1vfm5wTd+XQeg6waE0F3bAwWcyLowIaZu3OUmBNBd2oMtDc/J+gKP3I393QeA64aEx800/FnR1+CxZwIuoKY9w5rmDmdIxJ0R1N5DLxqTAQdZCovObNxCRpz4qAwUMxvib5qTARdWM6YhxvTuYdVYyLojlyCx5wIOog507kHgg5s7GjVmAg6wFXC985sXDqJOXHaLuj56LGzVWMi6MZP4ZnOL1k5Ap6PHjudzokJ3fCKYTq/JujCch+gjR1P58TK0SjT+TpBBzJ2Pp0TQTfIdL5N0EGYzv8QdGNM57cJOsCNsabz/wTd0MUV0/l9gm78SqHp/JKgG4nZdJ5H0A2/h8N0fk3Qha2J2XSeT9CNMp2vE3TlTOdlBE0ogq6YO7mXE3TDerr5dS5BN3bZ28Hg2wRd6floB4PrCLqhiyum8/sE3SC7822CrnA6L/nJr7wk6Eamq3VjHkE3xrrxNkFX5tq6YTrPJ+iGmM7vEzShCLqiK4TWje0E3QjrxjyC7uTHuvVC0BVzdmM5QRd2azq/dXXQRJ9P0JUyndcRdOVM52UETSiCrpB1Yz1BV8y6sZygK+D9z/sRdGWsG9sIulLWjXUETSiCroh1YztBV8i6sZ6gD+YMx74ETSiCroT9eR+Croz9eRtBE4qgKzggtG7sR9AVsW5s92mHP4MbPv7x8N/j6faqj/9+/eeP56dfTed9mdCVMJ33IeiMpil87fsuqOQh6ANZN/Yn6ApYN/Yj6AOkdSM5n6+vJKwn6MJ79Pdfm877EvRBTOc8BH3AunH/+cvTY9N5f4I+gE8gzUfQBTy/KjhNZ/IQdGGmc16Cps+gHx++fsj7UvpYOxwIrjO3PxO6IDGfsvsbWw4BYYGAtMgAAAAASUVORK5CYII=">
+<link rel="icon" type="image/png" sizes="192x192" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAEEElEQVR4nO3dO27bUBAFUDnINgI3KrSKAK7SeLlqUgnIOtwYWUiCMUAklj8SKT6+z5xTOUIAB8jc4SUpibsdAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANC4u9r/AHI6Hn/+OX/t8fHH5vMoAFQZ+IeH72/+zun0a/NACACbDP57A/+RCMLhcHj5eb+/LzqjAlDZ09Pzny3+o2sN/8OMwd96+MPX0r+AfI4Ltn6N4Q8CQPWtX2v4w5etfhHjO3Y2/MERgKqVJ9Qa/iAApNv6/1OBSDv8wRGATS9xhlaGPwgAQ17fv5YKRHGtDn8QAIpu/5aHPwgAaYc/CABphz8IAGmHPwgAq+pp+IMAsNr27234gwCQdviDAJB2+IMAcJOehz8IAIu3f+/DHwSAm9/n0+vwBwFgkf+3f88EgJTVZyIAzDLS8AcB4OrtP9rwBwFgN/fEd5ThDwJAqpPecwKQ3DFp9ZkIQGLHxNVnIgCkrD4TAUgqe/WZCAAXjTr8QQASmrv9RyYAnT1IYwunBNVn4pvhkj1BZs6Vn/3gwx8EoFG1Hp10SlJ9JgLQ6PCXGPxL2/+UqPpMBKAhrTwwb59k+IMADL71l2z/TFwFakTNrXtKWH0mApDAtVd+9smGPwhAcqek1WciAIm3/ylx9ZkIALuswx8EYOC3QFy7/TNzGTT5PYF94u0fBGDQewK2/3VUoGQ3xJz4vuYIkPRtENmrz0QAGrHmQH5Uf5z4vqUCJWT7/yMAg7H95xGAZGz/1wRgILb/fAKQiO3/lgAM8jYI238ZAUhyQ8z2f58ADDD8tv9yboQluBts+39MADqvPLb/bVSgRpTa0rb/5wSgY7b/7QRgYLb/ZQJAagLQKfVnHQIwKPXnOgIwEB94mU8AOnwP0KWvOrT9rycAyT4Uz2sCMMjwqz/LCMBgHD3mEYDOtv+ch9xxmQAMsLnVn+UEYCDqz3wC0JH36o/tfxsBGITtv4wAkJoAdEL9KUMABngajPqznACQmgB0+jYIV3/WIQAd+Ozur/pzGwFohO1fhwB0zPa/nQCQmgB01v+d/K5LADql/qxDAEhNADqi/qxPADqk/qxHABrm44/lCUAn1J8yBKAz6s+6BIDUBKCD/q/+lCMAHVF/1icApCYAjVN/yhKATqg/ZQhAg9wA244ANEz9KU8AOqD+lONJJBV8+3b/4ff//P79fBcVKH4+HA4vrwlAOY4Ajfd/w1+WAFQQW37O65QjAA1y8rsdAWiY+lOeADTk/OSX8gSgkvO+f/5n238bAtAY239bAtBQ/Xl8/PFyFLD9tyMAgzwpHrq9Kzw9GWbpE2JYzhGgEbZ/HQIA1KX6AMBuY38Bd58f9gc+tR8AAAAASUVORK5CYII=">
+<link rel="icon" type="image/png" sizes="512x512" href="data:image/png;base64,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">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>灵感工作台</title>
 <style>
@@ -71,11 +71,15 @@ a{color:var(--accent);text-decoration:none}
 .sync-field input:focus{border-color:var(--accent)}
 .sync-field small{display:block;font-size:11px;color:var(--text3);margin-top:4px;line-height:1.5}
 .sync-status{font-size:13px;margin:10px 0;min-height:20px;color:var(--text2)}
+.sync-log{font-size:11px;color:var(--text3);margin:8px 0 12px;padding:8px;background:var(--card2);border-radius:8px;line-height:1.5}
+.sync-log.ok{color:var(--green)}
+.sync-log.error{color:var(--pink)}
 .sync-btns{display:flex;gap:8px;flex-wrap:wrap}
-.sync-btn{padding:9px 16px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer}
+.sync-btn{padding:9px 16px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;border:none}
 .sync-btn-save{background:var(--accent);color:#fff}
 .sync-btn-now{background:var(--card2);color:var(--text);border:1px solid var(--separator)}
 .sync-btn-close{background:transparent;color:var(--text3)}
+.sync-btn-clear{background:transparent;color:var(--pink);font-size:12px;padding:6px 12px}
 .sync-tip{margin-top:14px;padding:10px;background:var(--card2);border-radius:10px;font-size:11px;color:var(--text3);line-height:1.6}
 .footer-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 
@@ -523,9 +527,11 @@ a{color:var(--accent);text-decoration:none}
       <input type="text" id="sync-repo-input" placeholder="inspiration-workbench">
     </div>
     <div class="sync-status" id="sync-status"></div>
+    <div class="sync-log" id="sync-log">上次同步：无</div>
     <div class="sync-btns">
       <button class="sync-btn sync-btn-save" id="sync-save-btn">保存配置</button>
       <button class="sync-btn sync-btn-now" id="sync-now-btn">立即同步</button>
+      <button class="sync-btn sync-btn-clear" id="sync-clear-btn">清除配置</button>
       <button class="sync-btn sync-btn-close" id="sync-close-btn">关闭</button>
     </div>
     <div class="sync-tip">
@@ -574,6 +580,7 @@ const SYNC_FILE = 'workbench-sync.json';
 const SYNC_TOKEN_KEY = 'github_sync_token';
 const SYNC_OWNER_KEY = 'github_sync_owner';
 const SYNC_REPO_KEY = 'github_sync_repo';
+const SYNC_LOG_KEY = 'inspire_sync_log_v1';
 const SYNC_SALT = new Uint8Array([137,69,197,33,241,53,147,83,211,37,157,101,173,197,233,37]);
 let sessionPwd = '';      // 内存中暂存密码(派生同步密钥用,不持久化)
 let syncKey = null;       // 同步专用密钥(固定盐,跨设备一致)
@@ -660,11 +667,31 @@ function scheduleSyncPush(){
   syncTimer = setTimeout(function(){ githubSyncPush(); }, 3000);
 }
 
+function saveSyncLog(status, message){
+  try{
+    localStorage.setItem(SYNC_LOG_KEY, JSON.stringify({ status:status, message:message, time:Date.now() }));
+  }catch(e){}
+}
+
+function getSyncLog(){
+  try{
+    var raw = localStorage.getItem(SYNC_LOG_KEY);
+    return raw ? JSON.parse(raw) : null;
+  }catch(e){ return null; }
+}
+
+function formatSyncTime(ts){
+  if(!ts) return '无';
+  var d = new Date(ts);
+  var pad = function(n){ return n<10?'0'+n:n; };
+  return pad(d.getMonth()+1)+'/'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
+}
+
 async function githubSyncPush(){
-  if(syncPulling || !syncKey || !syncEnabled || syncPushing) return;
+  if(syncPulling || !syncKey || !syncEnabled || syncPushing) return {ok:false, type:'busy', message:'正在同步中,请稍后再试'};
   syncPushing = true;
   const config = getSyncConfig();
-  if(!config){ syncPushing = false; return; }
+  if(!config){ syncPushing = false; return {ok:false, type:'config', message:'同步配置不完整'}; }
   try{
     const encrypted = await aesEncrypt(syncKey, store);
     const syncData = { v:2, salt:bufToB64(SYNC_SALT.buffer), data:encrypted, ts:Date.now() };
@@ -679,47 +706,94 @@ async function githubSyncPush(){
     if(resp.ok){
       const result = await resp.json();
       syncSha = result.content.sha;
+      saveSyncLog('ok', '已上传');
+      syncPushing = false;
+      return {ok:true, type:'ok', message:'已上传到 GitHub'};
+    }else if(resp.status === 401 || resp.status === 403){
+      saveSyncLog('error', 'Token 无效或没有 repo 权限');
+      syncPushing = false;
+      return {ok:false, type:'auth', message:'Token 无效或没有 repo 权限(401/403)'};
+    }else if(resp.status === 404){
+      saveSyncLog('error', '仓库不存在或没有访问权限');
+      syncPushing = false;
+      return {ok:false, type:'notfound', message:'仓库不存在或没有访问权限(404)'};
     }else if(resp.status === 409 || resp.status === 422){
       // SHA 过期,先拉取再重试推送
       console.log('sync SHA conflict, pulling first...');
-      await githubSyncPull(true);
+      var pullResult = await githubSyncPull(true);
       syncPushing = false;
+      if(!pullResult.ok && pullResult.type !== 'empty') return pullResult;
       // 重试推送(用新的 SHA)
-      await githubSyncPush();
-      return; // 避免重复设置 syncPushing = false
+      return await githubSyncPush();
+    }else{
+      var errText = '';
+      try{ errText = await resp.text(); }catch(e){}
+      saveSyncLog('error', '上传失败 HTTP '+resp.status+' '+errText.slice(0,80));
+      syncPushing = false;
+      return {ok:false, type:'http', message:'上传失败 HTTP '+resp.status};
     }
-  }catch(e){ console.warn('sync push failed', e); }
-  syncPushing = false;
+  }catch(e){
+    saveSyncLog('error', '上传异常: '+e.message);
+    syncPushing = false;
+    return {ok:false, type:'exception', message:'上传异常: '+e.message};
+  }
 }
 
 async function githubSyncPull(force){
-  if(!syncKey || !syncEnabled) return false;
+  if(!syncKey || !syncEnabled) return {ok:false, type:'disabled', message:'同步未启用'};
   const config = getSyncConfig();
-  if(!config) return false;
+  if(!config) return {ok:false, type:'config', message:'同步配置不完整'};
   syncPulling = true;
   try{
     const resp = await fetch('https://api.github.com/repos/'+config.owner+'/'+config.repo+'/contents/'+SYNC_FILE, {
       headers:{ 'Authorization':'Bearer '+config.token, 'Accept':'application/vnd.github+json' }
     });
-    if(!resp.ok){ syncPulling = false; return false; }
+    if(resp.status === 404){
+      syncPulling = false;
+      saveSyncLog('ok', '远程暂无数据');
+      return {ok:true, type:'empty', message:'远程暂无数据,将上传本地数据'};
+    }
+    if(resp.status === 401 || resp.status === 403){
+      syncPulling = false;
+      saveSyncLog('error', 'Token 无效或没有 repo 权限');
+      return {ok:false, type:'auth', message:'Token 无效或没有 repo 权限(401/403)'};
+    }
+    if(!resp.ok){
+      syncPulling = false;
+      saveSyncLog('error', '拉取失败 HTTP '+resp.status);
+      return {ok:false, type:'http', message:'拉取失败 HTTP '+resp.status};
+    }
     const fileData = await resp.json();
     syncSha = fileData.sha;
     const jsonStr = b64ToUtf8(fileData.content.replace(/\n/g,''));
     const syncData = JSON.parse(jsonStr);
-    if(!syncData || !syncData.data){ syncPulling = false; return false; }
-    const remoteStore = await aesDecrypt(syncKey, syncData.data);
+    if(!syncData || !syncData.data){
+      syncPulling = false;
+      return {ok:false, type:'data', message:'远程数据格式不对'};
+    }
+    var remoteStore;
+    try{
+      remoteStore = await aesDecrypt(syncKey, syncData.data);
+    }catch(de){
+      syncPulling = false;
+      saveSyncLog('error', '解密失败,可能是密码不一致');
+      return {ok:false, type:'pwd', message:'解密失败,手机和电脑的密码必须一致'};
+    }
     let merged = mergeStore(remoteStore);
     if(merged || force){
       await persistAll(); // 保存合并后的数据(此时 syncPulling=true 不会触发推送)
       renderMemos(); renderTodoBar(); renderNews(); renderPeriod(); renderChat();
-      if(force) toast('已从 GitHub 同步最新数据','green');
+      saveSyncLog('ok', '已同步最新数据');
+      syncPulling = false;
+      return {ok:true, type:'merged', message:'已从 GitHub 同步最新数据'};
     }
     syncPulling = false;
-    return merged;
+    saveSyncLog('ok', '数据已是最新');
+    return {ok:true, type:'uptodate', message:'数据已是最新'};
   }catch(e){
-    console.warn('sync pull failed', e);
+    saveSyncLog('error', '拉取异常: '+e.message);
     syncPulling = false;
-    return false;
+    return {ok:false, type:'exception', message:'拉取异常: '+e.message};
   }
 }
 
@@ -914,6 +988,15 @@ async function enterApp(){
   // 检查同步是否已配置
   syncEnabled = !!(localStorage.getItem(SYNC_TOKEN_KEY) && localStorage.getItem(SYNC_OWNER_KEY) && localStorage.getItem(SYNC_REPO_KEY));
   await loadStoreEnc();
+  // 如果已配置同步,先强制拉取远程数据再渲染,避免新设备用默认数据覆盖旧数据
+  if(syncEnabled && syncKey){
+    try{
+      const pullResult = await githubSyncPull(true);
+      if(!pullResult.ok && pullResult.type !== 'empty'){
+        console.warn('auto pull failed', pullResult);
+      }
+    }catch(e){ console.warn('auto pull error', e); }
+  }
   await startApp();
 }
 
@@ -1050,6 +1133,18 @@ function initLockScreen(){
   // GitHub 同步
   var syncBtn = document.getElementById('footer-sync');
   var syncModal = document.getElementById('sync-modal');
+  function updateSyncLogDisplay(){
+    var log = getSyncLog();
+    var el = document.getElementById('sync-log');
+    if(!el) return;
+    if(!log){
+      el.textContent = '上次同步：无';
+      el.className = 'sync-log';
+      return;
+    }
+    el.textContent = '上次同步：'+formatSyncTime(log.time)+' · '+log.message;
+    el.className = 'sync-log '+(log.status==='ok'?'ok':'error');
+  }
   if(syncBtn){
     syncBtn.onclick = function(){
       var owner = localStorage.getItem(SYNC_OWNER_KEY) || '';
@@ -1069,6 +1164,7 @@ function initLockScreen(){
       var ss = document.getElementById('sync-status');
       ss.textContent = syncEnabled ? '✅ 同步已启用' : '⚠️ 未配置';
       ss.style.color = syncEnabled ? 'var(--green)' : 'var(--yellow)';
+      updateSyncLogDisplay();
       syncModal.classList.remove('hidden');
     };
   }
@@ -1090,17 +1186,25 @@ function initLockScreen(){
       syncEnabled = true;
       ss.textContent = '🔄 正在同步...';
       ss.style.color = 'var(--accent)';
-      githubSyncPull(true).then(function(ok){
-        if(ok){
-          ss.textContent = '✅ 同步成功！数据已合并';
+      githubSyncPull(true).then(function(result){
+        updateSyncLogDisplay();
+        if(result.ok && result.type !== 'empty'){
+          ss.textContent = '✅ '+result.message;
           ss.style.color = 'var(--green)';
-          githubSyncPush();
-        }else{
-          // 没有远程数据,推送本地
-          githubSyncPush().then(function(){
-            ss.textContent = '✅ 已保存,本地数据已上传';
-            ss.style.color = 'var(--green)';
+          githubSyncPush().then(function(pushResult){
+            updateSyncLogDisplay();
+            ss.textContent = '✅ '+pushResult.message;
           });
+        }else if(result.type === 'empty'){
+          ss.textContent = 'ℹ️ '+result.message;
+          ss.style.color = 'var(--yellow)';
+          githubSyncPush().then(function(pushResult){
+            updateSyncLogDisplay();
+            ss.textContent = '✅ '+pushResult.message;
+          });
+        }else{
+          ss.textContent = '❌ '+result.message;
+          ss.style.color = 'var(--pink)';
         }
       });
     };
@@ -1112,12 +1216,39 @@ function initLockScreen(){
       var ss = document.getElementById('sync-status');
       ss.textContent = '🔄 同步中...';
       ss.style.color = 'var(--accent)';
-      githubSyncPull(true).then(function(ok){
-        githubSyncPush().then(function(){
-          ss.textContent = ok ? '✅ 同步完成' : '✅ 本地数据已上传';
-          ss.style.color = 'var(--green)';
+      githubSyncPull(true).then(function(pullResult){
+        updateSyncLogDisplay();
+        githubSyncPush().then(function(pushResult){
+          updateSyncLogDisplay();
+          if(!pullResult.ok && pullResult.type !== 'empty'){
+            ss.textContent = '❌ '+pullResult.message;
+            ss.style.color = 'var(--pink)';
+          }else if(!pushResult.ok){
+            ss.textContent = '❌ '+pushResult.message;
+            ss.style.color = 'var(--pink)';
+          }else{
+            ss.textContent = '✅ '+pushResult.message;
+            ss.style.color = 'var(--green)';
+          }
         });
       });
+    };
+  }
+  var syncClearBtn = document.getElementById('sync-clear-btn');
+  if(syncClearBtn){
+    syncClearBtn.onclick = function(){
+      if(!confirm('清除同步配置后数据不再自动同步到 GitHub，确定吗？')) return;
+      localStorage.removeItem(SYNC_TOKEN_KEY);
+      localStorage.removeItem(SYNC_OWNER_KEY);
+      localStorage.removeItem(SYNC_REPO_KEY);
+      localStorage.removeItem(SYNC_LOG_KEY);
+      syncEnabled = false;
+      syncSha = null;
+      document.getElementById('sync-token-input').value = '';
+      var ss = document.getElementById('sync-status');
+      ss.textContent = '⚠️ 已清除同步配置';
+      ss.style.color = 'var(--yellow)';
+      updateSyncLogDisplay();
     };
   }
 }
@@ -2539,7 +2670,13 @@ async function startApp(){
   setTimeout(()=>document.getElementById('memo-input').focus(), 200);
   // 自动从 GitHub 拉取同步数据
   if(syncEnabled && syncKey){
-    setTimeout(function(){ githubSyncPull(false); }, 1500);
+    setTimeout(function(){
+      githubSyncPull(false).then(function(result){
+        if(result.type === 'auth') toast('同步失败:Token 无效或没有 repo 权限','red');
+        else if(result.type === 'pwd') toast('同步失败:密码和电脑不一致,无法解密数据','red');
+        else if(result.type === 'notfound') toast('同步失败:找不到同步文件,先在电脑上配置同步','red');
+      });
+    }, 1500);
   }
 }
 
