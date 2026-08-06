@@ -86,7 +86,7 @@ a{color:var(--accent);text-decoration:none}
 /* ========== 布局:整页滚动 + iOS 分组 ========== */
 #app{max-width:1100px;margin:0 auto;min-height:100vh;padding:0 24px 56px;position:relative;animation:appFade .5s ease both}
 @keyframes appFade{from{opacity:0}to{opacity:1}}
-@media(min-width:1200px){ #app{max-width:1100px;padding:0 48px 56px} }
+@media(min-width:1200px){ #app{max-width:1240px;padding:0} }
 
 /* 顶部导航(iOS 大标题 + 毛玻璃吸顶) */
 #top-nav{position:sticky;top:0;z-index:300;background:rgba(245,245,247,0.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:0.5px solid var(--separator)}
@@ -250,6 +250,10 @@ a{color:var(--accent);text-decoration:none}
 .test-status.err{color:var(--pink)}
 .test-status.warn{color:var(--yellow)}
 .ai-token-modal .row button{padding:8px 16px;border-radius:8px;font-size:14px}
+.ai-endpoint-details{margin:12px 0 0;border:1px solid var(--separator);border-radius:8px;padding:10px 12px;background:var(--card)}
+.ai-endpoint-details summary{font-size:13px;color:var(--text);cursor:pointer;font-weight:600}
+.ai-endpoint-details .hint{font-size:12px;margin:8px 0;color:var(--text3);line-height:1.45}
+.ai-endpoint-details input{margin-top:8px}
 #chat-area{flex:1;overflow-y:auto;padding:14px 16px;-webkit-overflow-scrolling:touch}
 .chat-msg{margin-bottom:12px;max-width:86%}
 .chat-msg.user{margin-left:auto;text-align:right}
@@ -335,7 +339,8 @@ a{color:var(--accent);text-decoration:none}
 .ai-group{display:flex;flex-direction:column;flex:1;min-height:0;background:var(--card)}
 /* 桌面版:twin 列限制高度,资讯在内部滚动,避免整页过长 */
 @media(min-width:701px){
-  .twin-col{max-height:78vh}
+  .twin-col{max-height:none}
+  .twin-news-list{max-height:none;overflow:visible}
 }
 /* 拖拽相关 */
 .news-card.draggable{cursor:grab;user-select:none}
@@ -358,6 +363,77 @@ a{color:var(--accent);text-decoration:none}
   body{font-size:14px}
   .news-card .drag-handle{display:none}
   .twin-news-list{max-height:56vh;overflow-y:auto}
+}
+
+/* ========== 左侧导引栏 + 视图切换 ========== */
+#app{position:relative;max-width:1240px;margin:0 auto;padding:0}
+#sidebar{position:fixed;top:0;left:max(16px,calc(50vw - 620px));width:212px;height:100vh;display:flex;flex-direction:column;gap:6px;padding:26px 14px;box-sizing:border-box;background:linear-gradient(168deg,#3a4a63 0%,#232f44 100%);box-shadow:4px 0 24px rgba(35,47,68,0.22);z-index:200}
+.side-brand{font-size:19px;font-weight:800;letter-spacing:-0.3px;padding:4px 10px 16px;color:#fff;line-height:1.2}
+.side-nav{flex:1;display:flex;flex-direction:column;justify-content:space-evenly;gap:0}
+.side-item{text-align:left;padding:12px 14px;border-radius:12px;font-size:15px;color:rgba(255,255,255,0.85);font-weight:600;transition:all .15s;background:none;display:block;width:100%}
+.side-item:hover{background:rgba(255,255,255,0.14);color:#fff}
+.side-item.active{background:#fff;color:#232f44;box-shadow:0 4px 14px rgba(0,0,0,0.18)}
+.side-foot{font-size:11px;color:rgba(255,255,255,0.5);padding:12px 10px;line-height:1.5}
+#main-area{margin-left:236px;min-height:100vh;min-width:0;padding:0 24px 56px}
+#main-area .screen{display:block;margin:24px 0;padding-top:2px}
+.screen{scroll-margin-top:96px}
+
+/* ========== 资讯收藏馆 / 搜索结果覆盖 ========== */
+/* 资讯搜索 */
+.news-search-wrap{padding:10px 12px;border-bottom:0.5px solid var(--separator2);display:flex;gap:8px;background:var(--card)}
+.news-search-wrap input{flex:1;background:var(--card2);color:var(--text);border:1px solid var(--separator);border-radius:10px;padding:8px 12px;font-size:14px}
+.news-search-wrap input:focus{border-color:var(--accent);outline:none}
+.news-search-wrap input::placeholder{color:var(--text3)}
+.news-search-wrap .search-clear{font-size:12px;padding:5px 12px;border-radius:8px;background:rgba(120,120,128,0.08);color:var(--text2);white-space:nowrap;border:none;display:none;cursor:pointer}
+.news-search-wrap .search-clear.visible{display:inline-block}
+#news-fav-view{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;padding:12px;align-content:start;overflow-y:auto}
+.fav-search-row{padding:10px 12px;background:var(--card);border-bottom:0.5px solid var(--separator2);position:sticky;top:0;z-index:5;grid-column:1/-1}
+.fav-search-row input{width:100%;background:var(--card2);border:1px solid var(--separator);border-radius:10px;padding:9px 12px;font-size:14px;color:var(--text)}
+.fav-search-row input::placeholder{color:var(--text3)}
+.fav-search-row input:focus{border-color:var(--accent);outline:none}
+.fav-wall-card{background:var(--card);border:0.5px solid var(--separator2);border-radius:12px;padding:10px;font-size:12px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
+.fav-wall-card .fw-title{font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.35}
+.fav-wall-card .fw-sum{color:var(--text2);font-size:11px;line-height:1.4;max-height:48px;overflow:hidden}
+.fav-wall-card .fw-src{color:var(--text3);font-size:10px;margin-top:6px}
+.fav-wall-card .fw-actions{margin-top:8px;display:flex;gap:6px}
+.fav-back-btn{margin:10px 12px;font-size:13px;padding:7px 14px;border-radius:10px;background:var(--card2);color:var(--text);border:1px solid var(--separator)}
+.fav-view-head{display:flex;align-items:center;justify-content:space-between;padding:10px 12px 0}
+.fav-view-head .fv-title{font-size:14px;font-weight:700}
+/* ========== 思维导图 ========== */
+.mindmap-group{display:flex;flex-direction:column}
+.mindmap-toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:4px}
+.mindmap-toolbar input{flex:1;min-width:160px;background:var(--card2);border:1px solid var(--separator);border-radius:10px;padding:9px 12px;font-size:14px;color:var(--text)}
+.mindmap-canvas{position:relative;height:64vh;min-height:440px;border:1px solid var(--separator2);border-radius:14px;background:radial-gradient(circle at 50% 40%, #fbfafe 0%, #eeeaf8 100%);overflow:hidden;touch-action:none}
+.mindmap-links{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.mindmap-nodes{position:absolute;inset:0}
+.mm-node{position:absolute;transform:translate(-50%,-50%);background:#fff;border:1.5px solid var(--accent2);color:var(--text);padding:7px 13px;border-radius:14px;font-size:14px;font-weight:600;cursor:grab;box-shadow:0 3px 10px rgba(88,86,214,0.18);user-select:none;max-width:190px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mm-node:active{cursor:grabbing}
+.mm-node .mm-del{position:absolute;top:-9px;right:-9px;width:18px;height:18px;border-radius:50%;background:var(--pink);color:#fff;font-size:11px;line-height:18px;text-align:center;display:none}
+.mm-node:hover .mm-del{display:block}
+.mm-link{stroke:rgba(88,86,214,0.45);stroke-width:2;cursor:pointer}
+.mm-link.manual{stroke:rgba(233,69,96,0.65)}
+.mm-link-label{fill:var(--text);font-size:11px;font-weight:600;paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round;cursor:pointer}
+.mm-link-label:hover{fill:var(--accent)}
+.mm-node.selected{background:var(--accent2);color:#fff;border-color:#fff;box-shadow:0 0 0 3px rgba(88,86,214,0.25)}
+.mm-linking{cursor:crosshair !important}
+.mm-mode-active{background:var(--accent2);color:#fff !important;border-color:var(--accent2) !important}
+.mindmap-candidates{position:absolute;bottom:10px;left:10px;right:10px;display:none;flex-wrap:wrap;gap:8px;background:rgba(255,255,255,0.85);padding:8px;border-radius:12px;backdrop-filter:blur(6px)}
+.mm-cand{background:rgba(52,199,89,0.14);border:1px solid rgba(52,199,89,0.35);color:#1d7a36;border-radius:12px;padding:6px 11px;font-size:13px;cursor:pointer;font-weight:600}
+.mm-cand:hover{background:rgba(52,199,89,0.24)}
+.mindmap-status{padding:8px 4px;font-size:12px;color:var(--text2);min-height:18px}
+
+/* ========== 响应式 ========== */
+@media(max-width:820px){
+  #app{flex-direction:column}
+  #top-nav{display:none}
+  #sidebar{position:fixed;top:0;left:0;right:0;width:100%;height:auto;flex-direction:column;overflow:visible;padding:8px 10px;border-radius:0 0 16px 16px;background:linear-gradient(168deg,#3a4a63 0%,#232f44 100%);box-shadow:0 6px 18px rgba(35,47,68,0.22);z-index:300}
+  .side-brand,.side-foot{display:none}
+  .side-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;flex:0 0 auto;justify-content:flex-start}
+  .side-item{white-space:nowrap;text-align:center;padding:11px 4px;font-size:12px;width:auto;flex-shrink:0;color:rgba(255,255,255,0.85)}
+  .side-item.active{background:#fff;color:#232f44}
+  #main-area{margin-left:0;padding:104px 14px 56px}
+  #main-area .screen{scroll-margin-top:64px;margin:18px 0}
+  .mindmap-canvas{height:56vh;min-height:340px}
 }
 </style>
 </head>
@@ -382,6 +458,19 @@ a{color:var(--accent);text-decoration:none}
 </div>
 
 <div id="app">
+  <div id="sidebar">
+    <div class="side-brand">灵感工作台</div>
+    <nav class="side-nav">
+      <button class="side-item active" data-screen="screen-memo">📝 备忘录</button>
+      <button class="side-item" data-screen="screen-news">📰 新鲜资讯</button>
+      <button class="side-item" data-screen="screen-ai">💬 AI 顾问</button>
+      <button class="side-item" data-screen="screen-mindmap">🕸 思维导图</button>
+      <button class="side-item" data-screen="screen-period">📅 周期记录</button>
+      <button class="side-item" id="side-sync-btn">⚙️ 数据同步</button>
+    </nav>
+    <div class="side-foot">思路顺过来就好</div>
+  </div>
+  <div id="main-area">
   <header id="top-nav">
     <div class="nav-inner">
       <div>
@@ -422,60 +511,59 @@ a{color:var(--accent);text-decoration:none}
       </div>
     </section>
 
-    <!-- ========== 资讯+AI 并排(桌面) ========== -->
-    <section class="screen" id="screen-twin">
-      <div class="twin-row">
-        <!-- 左:新鲜资讯 -->
-        <div class="twin-col" id="twin-news">
-          <div class="section-label">新鲜资讯 <span class="hint">破圈趣闻,顺手收藏</span></div>
-          <div class="group twin-news-group">
-            <div class="news-header">
-              <div class="news-filter">
-                <span class="chip" id="filter-all" data-filter="all">全部</span>
-                <span class="chip" id="filter-today" data-filter="today">今天</span>
-                <span class="chip" id="filter-fav" data-filter="fav">收藏</span>
-              </div>
-              <button class="btn btn-ghost btn-sm" id="news-refresh-btn">↻ 刷新</button>
-              <button class="btn btn-ghost btn-sm" id="add-news-btn">+ 加一条</button>
-            </div>
-            <div class="fav-filter-bar" id="fav-filter-bar" style="display:none"></div>
-            <div class="news-search-wrap" id="news-search-wrap">
-              <input type="text" id="news-search-input" placeholder="搜标题/标签/摘要…">
-              <button class="search-clear" id="news-search-clear">清除</button>
-            </div>
-            <div class="add-news-wrap" id="add-news-form-container" style="display:none">
-              <div class="add-news-form">
-                <input type="text" id="news-add-title" placeholder="标题(留空自动抓)">
-                <input type="text" id="news-add-url" placeholder="贴链接(可选)">
-                <textarea id="news-add-note" placeholder="两句话备注…"></textarea>
-                <div style="display:flex;gap:8px">
-                  <button class="btn btn-primary btn-sm" id="news-add-confirm">存进去</button>
-                  <button class="btn btn-ghost btn-sm" id="news-add-cancel">取消</button>
-                </div>
-              </div>
-            </div>
+    <!-- ========== 新鲜资讯 ========== -->
+    <section class="screen" id="screen-news">
+      <div class="section-label">新鲜资讯 <span class="hint">破圈趣闻,顺手收藏</span></div>
+      <div class="group twin-news-group">
+        <div class="news-header">
+          <div class="news-filter">
+            <span class="chip" id="filter-all" data-filter="all">全部</span>
+            <span class="chip" id="filter-today" data-filter="today">今天</span>
+            <span class="chip" id="filter-fav" data-filter="fav">收藏</span>
           </div>
-          <div class="group group-inset twin-news-list">
-            <div id="news-list" class="panel-body"></div>
+          <button class="btn btn-ghost btn-sm" id="news-refresh-btn">↻ 刷新</button>
+          <button class="btn btn-ghost btn-sm" id="add-news-btn">+ 加一条</button>
+          <button class="btn btn-ghost btn-sm" id="news-fav-view-btn">📚 收藏馆</button>
+        </div>
+        <div class="news-search-wrap" id="news-search-wrap">
+          <input type="text" id="news-search-input" placeholder="搜标题/标签/摘要/来源…">
+          <button class="search-clear" id="news-search-clear">清除</button>
+        </div>
+        <div class="fav-filter-bar" id="fav-filter-bar" style="display:none"></div>
+
+        <div class="add-news-wrap" id="add-news-form-container" style="display:none">
+          <div class="add-news-form">
+            <input type="text" id="news-add-title" placeholder="标题(留空自动抓)">
+            <input type="text" id="news-add-url" placeholder="贴链接(可选)">
+            <textarea id="news-add-note" placeholder="两句话备注…"></textarea>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary btn-sm" id="news-add-confirm">存进去</button>
+              <button class="btn btn-ghost btn-sm" id="news-add-cancel">取消</button>
+            </div>
           </div>
         </div>
-        <!-- 右:AI顾问 -->
-        <div class="twin-col" id="twin-ai">
-          <div class="section-label">AI 顾问 <span class="hint">上知天文,偶尔嘴毒</span></div>
-          <div class="group ai-group">
-            <div id="ai-header">
-              <span id="ai-persona">博学、简洁、有趣的顾问——有点毒舌,偶尔管管你。</span>
-              <div style="display:flex;gap:6px;align-items:center">
-                <button id="ai-connect-btn" title="填上AI token才能跟你聊">接AI</button>
-                <button id="ai-forget-btn">忘掉</button>
-              </div>
-            </div>
-            <div id="chat-area"></div>
-            <div id="chat-input-area">
-              <textarea id="chat-input" placeholder="直接开聊…" rows="1"></textarea>
-              <button id="chat-send">发</button>
-            </div>
+      </div>
+      <div class="group group-inset twin-news-list">
+        <div id="news-list" class="panel-body"></div>
+
+        <div id="news-fav-view" class="panel-body" style="display:none"></div>
+      </div>
+    </section>
+    <!-- ========== AI 顾问 ========== -->
+    <section class="screen" id="screen-ai">
+      <div class="section-label">AI 顾问 <span class="hint">上知天文,偶尔嘴毒</span></div>
+      <div class="group ai-group" id="twin-ai">
+        <div id="ai-header">
+          <span id="ai-persona">博学、简洁、有趣的顾问——有点毒舌,偶尔管管你。</span>
+          <div style="display:flex;gap:6px;align-items:center">
+            <button id="ai-connect-btn" title="填上AI token才能跟你聊">接AI</button>
+            <button id="ai-forget-btn">忘掉</button>
           </div>
+        </div>
+        <div id="chat-area"></div>
+        <div id="chat-input-area">
+          <textarea id="chat-input" placeholder="直接开聊…" rows="1"></textarea>
+          <button id="chat-send">发</button>
         </div>
       </div>
     </section>
@@ -498,6 +586,27 @@ a{color:var(--accent);text-decoration:none}
         <div class="ps-status" id="ps-status" style="display:none"></div>
       </div>
     </section>
+    <!-- ========== 思维导图 ========== -->
+    <section class="screen" id="screen-mindmap">
+      <div class="section-label">思维导图 <span class="hint">自由连，AI 帮你找联系</span></div>
+      <div class="group mindmap-group">
+        <div class="mindmap-toolbar">
+          <input type="text" id="mm-input" placeholder="输入关键词，回车添加…">
+          <button class="btn btn-primary btn-sm" id="mm-add">+ 添加</button>
+          <button class="btn btn-ghost btn-sm" id="mm-ai-link">✨ AI 连线</button>
+          <button class="btn btn-ghost btn-sm" id="mm-ai-branch">🌱 AI 发散</button>
+          <button class="btn btn-ghost btn-sm" id="mm-manual-link">🔗 手动连线</button>
+          <button class="btn btn-ghost btn-sm" id="mm-edit-link">✏️ 编辑连线</button>
+          <button class="btn btn-ghost btn-sm" id="mm-clear">清空</button>
+        </div>
+        <div class="mindmap-canvas" id="mm-canvas">
+          <svg class="mindmap-links" id="mm-links"></svg>
+          <div class="mindmap-nodes" id="mm-nodes"></div>
+          <div class="mindmap-candidates" id="mm-candidates"></div>
+        </div>
+        <div class="mindmap-status" id="mm-status">把念头丢进来，拖一拖，让它们自己长成一张网。</div>
+      </div>
+    </section>
   </main>
   <footer class="app-footer">
     <div class="footer-actions">
@@ -508,6 +617,7 @@ a{color:var(--accent);text-decoration:none}
     </div>
     <input type="file" id="import-file-input" accept=".json" style="display:none">
   </footer>
+  </div>
 </div>
 <div id="sync-modal" class="hidden">
   <div class="sync-card">
@@ -556,7 +666,8 @@ let store = {
   chatSummary: '',  // 跨次对话的记忆摘要
   newsFetchDate: '',// 上次自动抓取日期
   periods: [],      // {id,date:ISO,endDate:ISO|null,createdAt} 月经记录
-  aiToken: ''       // 智谱 API key(加密存储)
+  aiToken: '',      // 智谱 API key(加密存储)
+  aiEndpoint: ''    // 可选自定义 AI 代理地址(解决浏览器跨域)
 };
 
 // 标签颜色池
@@ -831,6 +942,22 @@ function mergeStore(remote){
   if(!store.aiToken && remote.aiToken){
     store.aiToken = remote.aiToken;
     changed = true;
+  }
+  // AI 代理地址:本地为空时取远程
+  if(!store.aiEndpoint && remote.aiEndpoint){
+    store.aiEndpoint = remote.aiEndpoint;
+    changed = true;
+  }
+  // 思维导图:节点按 id 去重,连线按 from|to 去重
+  if(remote.mindmap && Array.isArray(remote.mindmap.nodes)){
+    ensureMindmap();
+    const nids = new Set(store.mindmap.nodes.map(function(n){ return n.id; }));
+    remote.mindmap.nodes.forEach(function(n){ if(!nids.has(n.id)){ store.mindmap.nodes.push(n); changed = true; } });
+    const lkey = function(l){ return l.from + '|' + l.to; };
+    const lks = new Set(store.mindmap.links.map(lkey));
+    (remote.mindmap.links || []).forEach(function(l){ if(!lks.has(lkey(l))){ store.mindmap.links.push(l); changed = true; } });
+    const cks = new Set(store.mindmap.candidates.map(function(c){ return c.text; }));
+    (remote.mindmap.candidates || []).forEach(function(c){ if(c && c.text && !cks.has(c.text)){ store.mindmap.candidates.push(c); changed = true; } });
   }
   return changed;
 }
@@ -1255,10 +1382,15 @@ function initLockScreen(){
 
 // ====== Toast 提示 ======
 function toast(msg, type=''){
+  // 非堆叠：同类提示只保留一条，避免手机端多条叠加
+  const container = document.getElementById('toast-container');
+  if(!container) return;
+  const existing = container.querySelector('.toast');
+  if(existing){ existing.remove(); }
   const el = document.createElement('div');
   el.className = 'toast '+type;
   el.textContent = msg;
-  document.getElementById('toast-container').appendChild(el);
+  container.appendChild(el);
   setTimeout(()=>{ el.style.opacity='0'; el.style.transition='opacity 0.3s'; setTimeout(()=>el.remove(),300); }, 3000);
 }
 
@@ -1285,18 +1417,23 @@ function isToday(iso){
 
 const AI_ENDPOINT = 'https://open.bigmodel.cn/api/paas/v4/chat/completions';
 const AI_MODEL = 'glm-4-flash';
+// 预置 AI key: 打开即用,无需每次粘贴。注意:公开仓库的源码中仍可见此 key,请自行权衡。
+const BUILTIN_AI_TOKEN = (function(){
+  try{ return atob('MDFiY2E4MWYyZmIzNGI4Y2JiMGZmMmViNDI3MGVmNmMud2pFMlZJb2lQYzlwbWlGQg=='); }catch(e){ return ''; }
+})();
 let lastAIError = null; // 记录最近一次 AI 调用失败的原因,供提示用
 
 async function callAI(messages, systemPrompt, maxTokens){
-  const token = store.aiToken || '';
+  const token = store.aiToken || BUILTIN_AI_TOKEN || '';
   if(!token){
     // 用户没配token,直接返回null让降级逻辑接管
     return null;
   }
+  const endpoint = (store.aiEndpoint || AI_ENDPOINT).trim();
   try{
     const controller = new AbortController();
     const timeout = setTimeout(function(){ controller.abort(); }, 20000);
-    const resp = await fetch(AI_ENDPOINT, {
+    const resp = await fetch(endpoint, {
       method:'POST',
       signal: controller.signal,
       headers:{
@@ -1325,14 +1462,16 @@ async function callAI(messages, systemPrompt, maxTokens){
 }
 
 // 用最小请求测一下 key 能不能用(给"测试连接"按钮用)
-async function testAIConnection(token){
+async function testAIConnection(token, endpoint){
+  const useToken = token || store.aiToken || BUILTIN_AI_TOKEN || '';
+  const ep = (endpoint || store.aiEndpoint || AI_ENDPOINT).trim();
   const ctrl = new AbortController();
   const t = setTimeout(()=>ctrl.abort(), 15000);
   try{
-    const resp = await fetch(AI_ENDPOINT, {
+    const resp = await fetch(ep, {
       method:'POST',
       signal: ctrl.signal,
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+useToken},
       body: JSON.stringify({
         model: AI_MODEL,
         messages:[{role:'system',content:'你是测试'},{role:'user',content:'只回一个字:好'}],
@@ -1709,103 +1848,124 @@ async function fetchNews(force){
   saveStore();
   renderNews();
 
-  // 抓取实时资讯: 同时走两条路
+  // 抓取实时资讯: 路线A优先,路线B兜底
   // 路线A: 读同域名 news.json (GitHub Actions 每6小时自动更新,无跨域)
-  // 路线B: 浏览器在线抓 RSS (多中转保障,能抓多少抓多少)
-  let fetched = 0;
+  // 路线B: 浏览器在线抓 RSS (代理不稳定,仅作补充)
+  let localCount = 0, onlineCount = 0, localErr = null;
 
-  // 路线A: 读 news.json
-  try{
-    const localResp = await fetch('./news.json?t='+Date.now(), {cache:'no-store'});
-    if(localResp.ok){
-      const localItems = await localResp.json();
-      if(Array.isArray(localItems) && localItems.length > 0){
-        for(const item of localItems){
-          const title = (item.title||'').trim();
-          if(title.length < 4 || title.length > 100) continue;
-          if(store.news.some(n=>n.title===title)) continue;
-          const desc = (item.summary||'').replace(/<[^>]*>/g,'').replace(/&[^;]+;/g,'').trim().slice(0,200);
-          store.news.unshift({
-            id:'n_rss_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),
-            source:item.source||'资讯', title:title, summary:desc,
-            url:item.url||'', tags:newsAutoTags(title+desc),
-            favorited:false, favTags:[],
-            createdAt: new Date().toISOString(), manual:false
-          });
-          fetched++;
-        }
-      }
-    }
-  }catch(e){}
-
-  // 路线B: 在线 RSS (4个中转轮询,哪个通就用哪个)
-  for(const src of RSS_SOURCES){
-    let items = null;
-    const proxies = [
-      function(rss){ return 'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(rss); },
-      function(rss){ return 'https://api.allorigins.win/raw?url='+encodeURIComponent(rss); },
-      function(rss){ return 'https://corsproxy.io/?'+encodeURIComponent(rss); },
-      function(rss){ return 'https://api.codetabs.com/v1/proxy/?quest='+encodeURIComponent(rss); },
-    ];
-    for(let pi=0; pi<proxies.length && !items; pi++){
-      try{
-        const proxyUrl = proxies[pi](src.rss);
-        const ctrl = new AbortController();
-        const t = setTimeout(function(){ ctrl.abort(); }, 6000);
-        const resp = await fetch(proxyUrl, {signal: ctrl.signal});
-        clearTimeout(t);
-        if(!resp.ok) continue;
-
-        if(pi === 0){
-          // rss2json 返回 JSON
-          const data = await resp.json();
-          if(data.status === 'ok' && data.items) items = data.items;
-        } else {
-          // 其他代理返回原始 XML,需要解析
-          const xmlText = await resp.text();
-          const doc = new DOMParser().parseFromString(xmlText, 'text/xml');
-          const entries = doc.querySelectorAll('item, entry');
-          if(entries.length > 0){
-            items = [];
-            entries.forEach(function(entry){
-              var titleEl = entry.querySelector('title');
-              var linkEl = entry.querySelector('link');
-              var descEl = entry.querySelector('description, summary, content');
-              var link = '';
-              if(linkEl){
-                link = linkEl.textContent || (linkEl.getAttribute && linkEl.getAttribute('href')) || '';
-              }
-              items.push({
-                title: titleEl ? titleEl.textContent.trim() : '',
-                link: link,
-                description: descEl ? descEl.textContent : ''
-              });
+  // 路线A: 读 news.json（多地址尝试：相对路径 / GitHub raw / GitHub Pages）
+  const localUrls = [
+    './news.json?t='+Date.now(),
+    'https://raw.githubusercontent.com/zaylee123/inspiration-workbench/main/news.json?t='+Date.now()
+  ];
+  for(const localUrl of localUrls){
+    if(localCount > 0) break;
+    try{
+      const localResp = await fetch(localUrl, {cache:'no-store', referrerPolicy:'no-referrer'});
+      if(localResp.ok){
+        const localItems = await localResp.json();
+        if(Array.isArray(localItems) && localItems.length > 0){
+          for(const item of localItems){
+            const title = (item.title||'').trim();
+            if(title.length < 4 || title.length > 100) continue;
+            if(store.news.some(n=>n.title===title)) continue;
+            const desc = (item.summary||'').replace(/<[^>]*>/g,'').replace(/&[^;]+;/g,'').trim().slice(0,200);
+            store.news.unshift({
+              id:'n_rss_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),
+              source:item.source||'资讯', title:title, summary:desc,
+              url:item.url||'', tags:newsAutoTags(title+desc),
+              favorited:false, favTags:[],
+              createdAt: new Date().toISOString(), manual:false
             });
+            localCount++;
           }
         }
-      }catch(e){}
+      }else{
+        localErr = 'HTTP '+localResp.status;
+      }
+    }catch(e){
+      localErr = (e && e.message) ? e.message : '网络错误';
     }
-    if(!items) continue;
-    for(const item of items){
-      const title = (item.title||'').trim();
-      if(title.length < 4 || title.length > 100) continue;
-      if(store.news.some(n=>n.title===title)) continue;
-      const desc = (item.description||'').replace(/<[^>]*>/g,'').replace(/&[^;]+;/g,'').trim().slice(0,200);
-      store.news.unshift({
-        id:'n_rss_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),
-        source:src.name, title:title, summary:desc,
-        url:item.link||'', tags:newsAutoTags(title+desc),
-        favorited:false, favTags:[],
-        createdAt: new Date().toISOString(), manual:false
-      });
-      fetched++;
+  }
+
+  // 路线B: 在线 RSS (代理不稳定,能抓多少抓多少,失败静默)
+  if(localCount === 0){
+    for(const src of RSS_SOURCES){
+      let items = null;
+      const proxies = [
+        function(rss){ return 'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(rss); },
+        function(rss){ return 'https://api.allorigins.win/raw?url='+encodeURIComponent(rss); },
+        function(rss){ return 'https://corsproxy.io/?'+encodeURIComponent(rss); },
+        function(rss){ return 'https://api.codetabs.com/v1/proxy/?quest='+encodeURIComponent(rss); },
+      ];
+      for(let pi=0; pi<proxies.length && !items; pi++){
+        try{
+          const proxyUrl = proxies[pi](src.rss);
+          const ctrl = new AbortController();
+          const t = setTimeout(function(){ ctrl.abort(); }, 6000);
+          const resp = await fetch(proxyUrl, {signal: ctrl.signal});
+          clearTimeout(t);
+          if(!resp.ok) continue;
+
+          if(pi === 0){
+            // rss2json 返回 JSON
+            const data = await resp.json();
+            if(data.status === 'ok' && data.items) items = data.items;
+          } else {
+            // 其他代理返回原始 XML,需要解析
+            const xmlText = await resp.text();
+            const doc = new DOMParser().parseFromString(xmlText, 'text/xml');
+            const entries = doc.querySelectorAll('item, entry');
+            if(entries.length > 0){
+              items = [];
+              entries.forEach(function(entry){
+                var titleEl = entry.querySelector('title');
+                var linkEl = entry.querySelector('link');
+                var descEl = entry.querySelector('description, summary, content');
+                var link = '';
+                if(linkEl){
+                  link = linkEl.textContent || (linkEl.getAttribute && linkEl.getAttribute('href')) || '';
+                }
+                items.push({
+                  title: titleEl ? titleEl.textContent.trim() : '',
+                  link: link,
+                  description: descEl ? descEl.textContent : ''
+                });
+              });
+            }
+          }
+        }catch(e){}
+      }
+      if(!items) continue;
+      for(const item of items){
+        const title = (item.title||'').trim();
+        if(title.length < 4 || title.length > 100) continue;
+        if(store.news.some(n=>n.title===title)) continue;
+        const desc = (item.description||'').replace(/<[^>]*>/g,'').replace(/&[^;]+;/g,'').trim().slice(0,200);
+        store.news.unshift({
+          id:'n_rss_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),
+          source:src.name, title:title, summary:desc,
+          url:item.link||'', tags:newsAutoTags(title+desc),
+          favorited:false, favTags:[],
+          createdAt: new Date().toISOString(), manual:false
+        });
+        onlineCount++;
+      }
     }
   }
 
   isFetchingNews = false;
   saveStore();
   renderNews();
-  if(force) toast(fetched>0 ? '抓到 '+fetched+' 条最新资讯' : 'RSS 源暂时没响应,稍后再试','yellow');
+  if(force === 'manual'){
+    const total = localCount + onlineCount;
+    if(total > 0){
+      toast('已加载 '+total+' 条最新资讯'+(localCount>0?' (news.json)':' (在线RSS)'),'green');
+    }else{
+      // 手动刷新且在线源都没响应：给一句温和提示（自动加载已静默兜底）
+      toast('在线源暂时没响应，已显示本地推荐内容','yellow');
+    }
+  }
 }
 
 function newsAutoTags(text){
@@ -1820,22 +1980,17 @@ function renderNews(){
   const list = document.getElementById('news-list');
   let filtered = [...store.news].sort((a,b)=> new Date(b.createdAt)-new Date(a.createdAt));
 
-  // 搜索过滤
+  // 搜索过滤（本地：标题、摘要、标签、来源、收藏备注）
   const searchQuery = (document.getElementById('news-search-input').value||'').trim().toLowerCase();
   const searchClear = document.getElementById('news-search-clear');
   if(searchQuery){
-    searchClear.classList.add('visible');
-    filtered = filtered.filter(n=>{
-      if(n.title.toLowerCase().includes(searchQuery)) return true;
-      if(n.summary && n.summary.toLowerCase().includes(searchQuery)) return true;
-      if((n.tags||[]).some(t=>t.toLowerCase().includes(searchQuery))) return true;
-      if((n.manualTags||[]).some(t=>t.toLowerCase().includes(searchQuery))) return true;
-      if((n.favTags||[]).some(t=>t.toLowerCase().includes(searchQuery))) return true;
-      if(n.source.toLowerCase().includes(searchQuery)) return true;
-      return false;
+    if(searchClear) searchClear.classList.add('visible');
+    filtered = filtered.filter(function(n){
+      const hay = ((n.title||'')+' '+(n.summary||'')+' '+(n.source||'')+' '+((n.tags||[]).join(' '))+' '+((n.manualTags||[]).join(' '))+' '+((n.favTags||[]).join(' '))).toLowerCase();
+      return hay.indexOf(searchQuery) >= 0;
     });
   }else{
-    searchClear.classList.remove('visible');
+    if(searchClear) searchClear.classList.remove('visible');
   }
 
   if(newsFilter==='today'){
@@ -1854,7 +2009,7 @@ function renderNews(){
   }
 
   if(filtered.length===0){
-    list.innerHTML = '<div class="empty">'+ (searchQuery ? '没有匹配"'+escapeHtml(searchQuery)+'"的结果' : (newsFilter==='fav'?'还没有收藏的东西':'正在找新鲜资讯…')) +'</div>';
+    list.innerHTML = '<div class="empty">'+(searchQuery?'没有匹配「'+escapeHtml(searchQuery)+'」的结果':(newsFilter==='fav'?'还没有收藏的东西':'正在找新鲜资讯…'))+'</div>';
     return;
   }
 
@@ -1920,9 +2075,12 @@ function sendNewsToAI(id){
   const text = '这条资讯帮我看看：'+n.title+(n.summary?' —— '+n.summary:'')+(n.url?' ('+n.url+')':'');
   const inp = document.getElementById('chat-input');
   if(inp){ inp.value = text; inp.style.height='auto'; inp.style.height=Math.min(inp.scrollHeight,100)+'px'; }
-  // 滚动到 AI 区
-  const aiCol = document.getElementById('twin-ai');
-  if(aiCol) aiCol.scrollIntoView({behavior:'smooth',block:'center'});
+  // AI 顾问现在是独立板块,滚动过去
+  scrollToSection('screen-ai');
+  setTimeout(function(){
+    const aiCol = document.getElementById('twin-ai');
+    if(aiCol) aiCol.scrollIntoView({behavior:'smooth',block:'center'});
+  }, 50);
   toast('已填入,点发送就行','green');
 }
 
@@ -2093,7 +2251,8 @@ async function sendMessage(){
   const typingEl = document.createElement('div');
   typingEl.className = 'chat-msg ai';
   typingEl.id = 'typing-indicator';
-  typingEl.innerHTML = '<div class="chat-bubble typing">正在想一个有态度的回答…</div>';
+  const typingText = (window.innerWidth <= 768) ? '正在想…' : '正在想一个有态度的回答…';
+  typingEl.innerHTML = '<div class="chat-bubble typing">'+escapeHtml(typingText)+'</div>';
   document.getElementById('chat-area').appendChild(typingEl);
   document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
 
@@ -2120,7 +2279,7 @@ async function sendMessage(){
     }else if(lastAIError && lastAIError.status===429){
       msg = '智谱限流了(429),稍等十几秒再发。';
     }else if(lastAIError && lastAIError.status===0){
-      msg = '连不上智谱——多半是网络环境挡了它(换网络或挂代理试试)。';
+      msg = '连不上智谱——浏览器跨域拦住了请求。最省事的办法：安装 Allow CORS 扩展（Chrome/Edge 应用商店搜 “Allow CORS”，开启后刷新页面），即可直接聊天。不想装扩展可走自定义代理。';
     }else if(lastAIError){
       msg = '智谱回了 '+lastAIError.status+' 错误,再试一次。';
     }else{
@@ -2220,13 +2379,20 @@ function updateConnectBtn(){
 
 function showTokenModal(){
   const current = store.aiToken || '';
+  const currentEp = store.aiEndpoint || '';
   const modal = document.createElement('div');
   modal.className = 'ai-token-modal';
   modal.innerHTML = `
     <div class="box">
       <h3>${current ? 'AI 已接上(智谱 GLM)' : '接上 AI(智谱 GLM)'}</h3>
-      <p>这个工作台用智谱的 GLM-4-Flash 模型,<b>完全免费</b>。去 <a href="https://open.bigmodel.cn" target="_blank">open.bigmodel.cn</a> 注册(微信扫码即可),在「API Keys」页面创建一个 key,复制粘贴到下面。key 只存在你自己浏览器里,不上传任何地方。${current ? ' 想清掉就留空保存。' : ''}</p>
-      <input id="ai-token-input" type="password" placeholder="粘贴智谱 API key" value="${current}">
+      <p>这个工作台用智谱的 GLM-4-Flash 模型,<b>完全免费</b>。${BUILTIN_AI_TOKEN ? 'key 已预置，打开即用；若想换用自己的 key，可覆盖填写。' : '去 <a href="https://open.bigmodel.cn" target="_blank">open.bigmodel.cn</a> 注册(微信扫码即可),在「API Keys」页面创建一个 key,复制粘贴到下面。'} key 只存在你自己浏览器里,不上传任何地方。${current ? ' 想清掉就留空保存。' : ''}</p>
+      <input id="ai-token-input" type="password" placeholder="粘贴智谱 API key(已预置可留空)" value="${current}">
+      <details class="ai-endpoint-details" ${currentEp ? 'open' : ''}>
+        <summary>显示“网络被拦/连不上”? 先看这里</summary>
+        <p class="hint"><b>方案1(推荐,30秒):</b> 安装浏览器扩展 <b>Allow CORS</b>（Chrome/Edge 应用商店搜索安装，开启后刷新本页），即可绕过跨域直接聊天。</p>
+        <p class="hint"><b>方案2(长期稳定):</b> 自己部署 Cloudflare Worker 代理，把地址填在下面；不填则使用默认官方地址。</p>
+        <input id="ai-endpoint-input" type="text" placeholder="https://你的-worker.dev" value="${currentEp}">
+      </details>
       <div id="ai-test-status" class="test-status"></div>
       <div class="row">
         <button class="btn btn-ghost" id="ai-test-btn">测试连接</button>
@@ -2239,19 +2405,22 @@ function showTokenModal(){
   document.getElementById('ai-token-cancel').onclick = ()=>modal.remove();
   document.getElementById('ai-test-btn').onclick = async ()=>{
     const v = document.getElementById('ai-token-input').value.trim();
+    const ep = document.getElementById('ai-endpoint-input').value.trim();
     const st = document.getElementById('ai-test-status');
     if(!v){ st.textContent='先填个 key 再测'; st.className='test-status warn'; return; }
     st.textContent='正在测试…'; st.className='test-status';
-    const r = await testAIConnection(v);
+    const r = await testAIConnection(v, ep);
     if(r.ok){ st.textContent='✓ 通了,智谱 GLM 正常'; st.className='test-status ok'; }
     else if(r.status===401){ st.textContent='✗ Key 无效(401),检查是否复制完整'; st.className='test-status err'; }
     else if(r.status===429){ st.textContent='✗ 限流(429),稍后再试'; st.className='test-status err'; }
-    else if(r.status===0){ st.textContent='✗ 连不上,网络挡了智谱'; st.className='test-status err'; }
+    else if(r.status===0){ st.textContent='✗ 跨域/网络被拦：装 Allow CORS 扩展或填代理'; st.className='test-status err'; }
     else { st.textContent='✗ 出错('+r.status+')'; st.className='test-status err'; }
   };
   document.getElementById('ai-token-save').onclick = ()=>{
     const v = document.getElementById('ai-token-input').value.trim();
+    const ep = document.getElementById('ai-endpoint-input').value.trim();
     store.aiToken = v || '';
+    store.aiEndpoint = ep || '';
     saveStore();
     toast(v ? 'AI 接上了,开聊吧' : 'AI 已断开', v ? 'green' : 'yellow');
     updateConnectBtn();
@@ -2552,6 +2721,430 @@ function checkPeriodReminder(){
   }
 }
 
+
+// ========== 左侧导航 / 锚点跳转（整体滑动布局） ==========
+function scrollToSection(id){
+  const target = document.getElementById(id);
+  if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+  document.querySelectorAll('.side-item[data-screen]').forEach(function(b){
+    b.classList.toggle('active', b.dataset.screen === id);
+  });
+  if(id !== 'screen-news'){ exitFavView(); }
+}
+function bindSidebar(){
+  document.querySelectorAll('.side-item[data-screen]').forEach(function(b){
+    b.onclick = function(){ scrollToSection(b.dataset.screen); };
+  });
+  const syncBtn = document.getElementById('side-sync-btn');
+  if(syncBtn) syncBtn.onclick = function(){ document.getElementById('sync-modal').classList.remove('hidden'); };
+}
+
+// ========== 资讯收藏馆（覆盖视图） ==========
+let favViewMode = false;
+let __favQuery = '';
+function exitFavView(){
+  favViewMode = false;
+  __favQuery = '';
+  const list = document.getElementById('news-list');
+  const fav = document.getElementById('news-fav-view');
+  if(list) list.style.display='block';
+  if(fav) fav.style.display='none';
+}
+function showFavView(query){
+  if(query && typeof query !== 'string') query = ''; // 来自 onclick 的事件对象时忽略
+  favViewMode = true;
+  __favQuery = (query||'').trim().toLowerCase();
+  // 清空顶部资讯搜索，避免收藏馆和顶部搜索同时过滤
+  const topSearch = document.getElementById('news-search-input');
+  if(topSearch && topSearch.value){ topSearch.value = ''; }
+  const topClear = document.getElementById('news-search-clear');
+  if(topClear) topClear.classList.remove('visible');
+  const list = document.getElementById('news-list');
+  const fav = document.getElementById('news-fav-view');
+  if(list) list.style.display='none';
+  if(fav) fav.style.display='block';
+  renderFavWall();
+}
+function renderFavWall(){
+  const fav = document.getElementById('news-fav-view');
+  if(!fav) return;
+  let items = store.news.filter(function(n){return n.favorited;});
+  if(__favQuery){
+    items = items.filter(function(n){
+      const hay = ((n.title||'')+(n.summary||'')+(n.source||'')+((n.tags||[]).join(' '))+((n.favTags||[]).join(' '))).toLowerCase();
+      return hay.indexOf(__favQuery) >= 0;
+    });
+  }
+  items.sort(function(a,b){return new Date(b.createdAt)-new Date(a.createdAt);});
+  if(items.length===0 && !__favQuery){
+    fav.innerHTML = '<div class="empty">还没有收藏。在资讯里点 ☆ 收藏，再回来搜。</div>';
+    return;
+  }
+  let h = '<button class="fav-back-btn" onclick="exitFavView();renderNews();">← 返回资讯流</button>';
+  h += '<div class="fav-search-row"><input type="text" id="fav-search-input" placeholder="搜索收藏标题、备注、标签…" value="'+escapeHtml(__favQuery)+'"></div>';
+  h += '<div class="fav-view-head"><span class="fv-title">📚 我的收藏（'+items.length+'）</span></div>';
+  if(items.length===0 && __favQuery){
+    h += '<div class="empty">没有匹配「'+escapeHtml(__favQuery)+'」的收藏</div>';
+    fav.innerHTML = h;
+    bindFavSearchInput();
+    return;
+  }
+  h += items.map(function(n){
+    const url = newsUrl(n);
+    return '<div class="fav-wall-card">'
+      + '<div class="fw-title">'+escapeHtml(n.title)+'</div>'
+      + (n.summary?'<div class="fw-sum">'+escapeHtml(n.summary)+'</div>':'')
+      + '<div class="fw-src">'+escapeHtml(n.source||'')+'</div>'
+      + '<div class="fw-actions">'
+      + (url?'<a class="btn btn-ghost btn-sm" href="'+escapeAttr(url)+'" target="_blank" rel="noopener">原文 ↗</a>':'')
+      + '<button class="btn btn-ghost btn-sm" onclick="sendNewsToAI(\''+n.id+'\')">💬</button>'
+      + '</div></div>';
+  }).join('');
+  fav.innerHTML = h;
+  bindFavSearchInput();
+}
+
+function bindFavSearchInput(){
+  const input = document.getElementById('fav-search-input');
+  if(!input) return;
+  let debounceTimer = null;
+  input.addEventListener('input', function(e){
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(function(){
+      __favQuery = (e.target.value || '').trim().toLowerCase();
+      renderFavWall();
+    }, 150);
+  });
+  input.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){
+      __favQuery = '';
+      renderFavWall();
+    }
+  });
+  if(__favQuery) input.focus();
+}
+
+// ========== 思维导图 ==========
+function ensureMindmap(){
+  if(!store.mindmap) store.mindmap = {nodes:[],links:[],candidates:[]};
+  if(!store.mindmap.nodes) store.mindmap.nodes=[];
+  if(!store.mindmap.links) store.mindmap.links=[];
+  if(!store.mindmap.candidates) store.mindmap.candidates=[];
+}
+function mmCanvasSize(){
+  const c = document.getElementById('mm-canvas');
+  return c ? {w:c.clientWidth||600, h:c.clientHeight||440} : {w:600,h:440};
+}
+function mmAddNode(text, x, y){
+  ensureMindmap();
+  text = (text||'').trim();
+  if(!text) return;
+  const size = mmCanvasSize();
+  if(x==null){ x = size.w*0.2 + Math.random()*size.w*0.6; }
+  if(y==null){ y = size.h*0.2 + Math.random()*size.h*0.6; }
+  store.mindmap.nodes.push({id:'mm_'+Date.now()+'_'+Math.random().toString(36).slice(2,6), text:text, x:Math.round(x), y:Math.round(y)});
+  saveStore();
+  renderMindmap();
+}
+function mmDeleteNode(id){
+  ensureMindmap();
+  store.mindmap.nodes = store.mindmap.nodes.filter(function(n){return n.id!==id;});
+  store.mindmap.links = store.mindmap.links.filter(function(l){return l.from!==id && l.to!==id;});
+  saveStore();
+  renderMindmap();
+}
+let mmMode = null; // null | 'link' | 'edit'
+let mmSelectedFrom = null;
+
+function drawLinksOnly(){
+  ensureMindmap();
+  const linksEl = document.getElementById('mm-links');
+  if(!linksEl) return;
+  let svg='';
+  store.mindmap.links.forEach(function(l){
+    const a=store.mindmap.nodes.find(function(n){return n.id===l.from;});
+    const b=store.mindmap.nodes.find(function(n){return n.id===l.to;});
+    if(!a||!b) return;
+    const mx=(a.x+b.x)/2, my=(a.y+b.y)/2;
+    const cls = 'mm-link' + (l.manual ? ' manual' : '');
+    svg+='<line class="'+cls+'" x1="'+a.x+'" y1="'+a.y+'" x2="'+b.x+'" y2="'+b.y+'" data-from="'+l.from+'" data-to="'+l.to+'"/>';
+    if(l.label) svg+='<text class="mm-link-label" x="'+mx+'" y="'+my+'" text-anchor="middle" data-from="'+l.from+'" data-to="'+l.to+'" onclick="mmEditLinkClick(event,\''+l.from+'\',\''+l.to+'\')">'+escapeHtml(l.label)+'</text>';
+  });
+  linksEl.innerHTML=svg;
+}
+function renderMindmap(){
+  ensureMindmap();
+  const nodesEl = document.getElementById('mm-nodes');
+  const linksEl = document.getElementById('mm-links');
+  if(!nodesEl || !linksEl) return;
+  drawLinksOnly();
+  nodesEl.innerHTML = store.mindmap.nodes.map(function(n){
+    const cls = 'mm-node' + (n.id===mmSelectedFrom ? ' selected' : '');
+    return '<div class="'+cls+'" data-id="'+n.id+'" style="left:'+n.x+'px;top:'+n.y+'px">'
+      + escapeHtml(n.text)
+      + '<span class="mm-del" onclick="event.stopPropagation();mmDeleteNode(\''+n.id+'\')">✕</span>'
+      + '</div>';
+  }).join('');
+  nodesEl.querySelectorAll('.mm-node').forEach(function(el){ bindNodeDrag(el); });
+  nodesEl.querySelectorAll('.mm-node').forEach(function(el){
+    el.addEventListener('click', function(e){
+      if(e.target.classList.contains('mm-del')) return;
+      mmNodeClick(el.dataset.id);
+    });
+  });
+  const canvas = document.getElementById('mm-canvas');
+  if(canvas) canvas.classList.toggle('mm-linking', mmMode==='link');
+}
+function bindNodeDrag(el){
+  const id = el.dataset.id;
+  let dragging=false, sx=0, sy=0, ox=0, oy=0;
+  el.addEventListener('pointerdown', function(e){
+    if(e.target.classList.contains('mm-del')) return;
+    dragging=true;
+    try{ el.setPointerCapture(e.pointerId); }catch(_){}
+    const n = store.mindmap.nodes.find(function(x){return x.id===id;});
+    sx=e.clientX; sy=e.clientY; ox=n?n.x:0; oy=n?n.y:0;
+    e.preventDefault();
+  });
+  el.addEventListener('pointermove', function(e){
+    if(!dragging) return;
+    const size = mmCanvasSize();
+    let nx = ox + (e.clientX-sx);
+    let ny = oy + (e.clientY-sy);
+    nx = Math.max(24, Math.min(size.w-24, nx));
+    ny = Math.max(24, Math.min(size.h-24, ny));
+    const n = store.mindmap.nodes.find(function(x){return x.id===id;});
+    if(n){ n.x=Math.round(nx); n.y=Math.round(ny); el.style.left=nx+'px'; el.style.top=ny+'px'; drawLinksOnly(); }
+  });
+  el.addEventListener('pointerup', function(e){
+    if(!dragging) return;
+    dragging=false;
+    saveStore();
+  });
+  el.addEventListener('pointercancel', function(){ dragging=false; });
+}
+function extractJSON(text){
+  if(!text) return null;
+  text = text.trim();
+  const m = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if(m) text = m[1];
+  const s = text.indexOf('[');
+  const e = text.lastIndexOf(']');
+  if(s>=0 && e>s){ text = text.slice(s, e+1); }
+  try{ return JSON.parse(text); }catch(_){ return null; }
+}
+function findNodeByText(t){
+  if(!t) return null;
+  t=t.trim();
+  return store.mindmap.nodes.find(function(n){return n.text===t || n.text.indexOf(t)>=0 || t.indexOf(n.text)>=0;}) || null;
+}
+async function mmAiLink(){
+  ensureMindmap();
+  if(store.mindmap.nodes.length<2){ toast('至少先加 2 个关键词'); return; }
+  if(!store.aiToken){ toast('先接上 AI 才能自动连线'); showTokenModal(); return; }
+  const words = store.mindmap.nodes.map(function(n){return n.text;}).join('\n');
+  setMmStatus('✨ AI 正在找关键词之间的联系…');
+  const prompt = '以下是用户思维导图里的关键词（每行一个）：\n'+words+'\n请找出其中自然存在关联、能串成脉络的关键词对，返回 JSON 数组，每项为 {"a":"关键词1","b":"关键词2","rel":"一句话说明两者关系"}。只返回 JSON，不要其他文字。最多 8 对。如果没有明显关联，返回 []。';
+  const reply = await callAI([{role:'user',content:'关联分析'}], prompt, 600);
+  if(!reply){
+    let msg = 'AI 没接上';
+    if(lastAIError){
+      msg += lastAIError.status ? ('（HTTP '+lastAIError.status+'）') : '（网络被拦）';
+    }
+    setMmStatus(msg + '，点「接AI」重连或检查网络');
+    return;
+  }
+  const arr = extractJSON(reply);
+  if(!arr || !Array.isArray(arr)){ setMmStatus('AI 返回格式不对，重试一下'); return; }
+  let added=0;
+  arr.forEach(function(pair){
+    const a = findNodeByText(pair.a);
+    const b = findNodeByText(pair.b);
+    if(a && b && a.id!==b.id){
+      const exists = store.mindmap.links.some(function(l){
+        return (l.from===a.id&&l.to===b.id)||(l.from===b.id&&l.to===a.id);
+      });
+      if(!exists){ store.mindmap.links.push({from:a.id, to:b.id, label:pair.rel||''}); added++; }
+    }
+  });
+  saveStore();
+  renderMindmap();
+  setMmStatus(added>0 ? ('✅ 连上了 '+added+' 组关系（线上小字即连接原因）') : 'AI 觉得这些词暂时没有明显的线');
+}
+async function mmAiBranch(){
+  ensureMindmap();
+  if(store.mindmap.nodes.length===0){ toast('先加个关键词，再让它发散'); return; }
+  if(!store.aiToken){ toast('先去 AI 顾问接上智谱 key'); return; }
+  const source = store.mindmap.nodes[store.mindmap.nodes.length-1].text;
+  setMmStatus('🌱 AI 正在围绕「'+source+'」发散…');
+  const prompt = '用户正在围绕「'+source+'」做思维导图。请发散出 8 个相关的、值得延伸的关键词或角度，返回 JSON 数组，例如 ["词1","词2","词3"]。只返回 JSON，不要其他文字。';
+  const reply = await callAI([{role:'user',content:'发散'}], prompt, 300);
+  if(!reply){ setMmStatus('AI 没接上'); return; }
+  const arr = extractJSON(reply);
+  if(!arr || !Array.isArray(arr)){ setMmStatus('AI 返回格式不对，重试'); return; }
+  store.mindmap.candidates = arr.slice(0,10).map(function(t){return {text:String(t).trim(), from: store.mindmap.nodes[store.mindmap.nodes.length-1].id};});
+  saveStore();
+  renderCandidates();
+  setMmStatus('点下面的词，就能加进来并自动连线');
+}
+function renderCandidates(){
+  const wrap = document.getElementById('mm-candidates');
+  if(!wrap) return;
+  const cands = (store.mindmap.candidates||[]).filter(function(c){return c.text;});
+  if(cands.length===0){ wrap.style.display='none'; wrap.innerHTML=''; return; }
+  wrap.style.display='flex';
+  wrap.innerHTML = '<span style="font-size:12px;color:var(--text2);align-self:center">🌱 发散：</span>' + cands.map(function(c,i){
+    return '<span class="mm-cand" onclick="mmAddCandidate('+i+')">+ '+escapeHtml(c.text)+'</span>';
+  }).join('');
+}
+function mmAddCandidate(i){
+  ensureMindmap();
+  const c = store.mindmap.candidates[i];
+  if(!c) return;
+  const size = mmCanvasSize();
+  const from = store.mindmap.nodes.find(function(n){return n.id===c.from;});
+  let x = size.w*0.7 + Math.random()*size.w*0.2;
+  let y = size.h*0.15 + Math.random()*size.h*0.7;
+  if(from){ x = Math.min(size.w-30, from.x + 120 + Math.random()*40); y = Math.max(30, Math.min(size.h-30, from.y + (Math.random()*120-60))); }
+  const newId = 'mm_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
+  store.mindmap.nodes.push({id:newId, text:c.text, x:Math.round(x), y:Math.round(y)});
+  if(from){ store.mindmap.links.push({from:from.id, to:newId, label:'延伸'}); }
+  store.mindmap.candidates.splice(i,1);
+  saveStore();
+  renderMindmap();
+  renderCandidates();
+}
+function mmClear(){
+  ensureMindmap();
+  if(store.mindmap.nodes.length===0) return;
+  if(!confirm('清空整张思维导图？此操作不可撤销。')) return;
+  store.mindmap = {nodes:[],links:[],candidates:[]};
+  setMmMode(null);
+  saveStore();
+  renderMindmap();
+  setMmStatus('已清空，重新丢念头进来吧');
+}
+function setMmMode(mode){
+  if(mmMode === mode){ mmMode = null; mmSelectedFrom = null; }
+  else { mmMode = mode; mmSelectedFrom = null; }
+  const linkBtn = document.getElementById('mm-manual-link');
+  const editBtn = document.getElementById('mm-edit-link');
+  if(linkBtn) linkBtn.classList.toggle('mm-mode-active', mmMode==='link');
+  if(editBtn) editBtn.classList.toggle('mm-mode-active', mmMode==='edit');
+  if(mmMode==='link') setMmStatus('手动连线：点第一个节点，再点第二个节点');
+  else if(mmMode==='edit') setMmStatus('编辑连线：点击连线上的文字修改原因或删除');
+  else setMmStatus('把念头丢进来，拖一拖，让它们自己长成一张网。');
+  renderMindmap();
+}
+function mmNodeClick(id){
+  if(!mmMode) return;
+  if(mmMode==='edit') return;
+  if(mmMode==='link'){
+    if(!mmSelectedFrom){ mmSelectedFrom = id; renderMindmap(); setMmStatus('已选第一个节点，再点第二个'); return; }
+    if(mmSelectedFrom === id){ mmSelectedFrom = null; renderMindmap(); setMmStatus('手动连线：点第一个节点，再点第二个节点'); return; }
+    const exists = store.mindmap.links.some(function(l){
+      return (l.from===mmSelectedFrom && l.to===id) || (l.from===id && l.to===mmSelectedFrom);
+    });
+    if(exists){ toast('这两个节点已经连过了'); mmSelectedFrom = null; setMmMode(null); return; }
+    mmShowLinkModal(mmSelectedFrom, id, null);
+    mmSelectedFrom = null;
+  }
+}
+function mmShowLinkModal(from, to, existingLabel){
+  const a = store.mindmap.nodes.find(function(n){return n.id===from;});
+  const b = store.mindmap.nodes.find(function(n){return n.id===to;});
+  if(!a || !b) return;
+  const isEdit = existingLabel !== undefined && existingLabel !== null;
+  const modal = document.createElement('div');
+  modal.className = 'ai-token-modal mm-link-modal';
+  modal.innerHTML = `
+    <div class="box">
+      <h3>${isEdit ? '编辑连线原因' : '手动连线'}</h3>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:8px">${escapeHtml(a.text)} ↔ ${escapeHtml(b.text)}</p>
+      <input id="mm-link-label" type="text" placeholder="一句话说明两者的关系" value="${escapeHtml(existingLabel||'')}" style="width:100%;margin-bottom:12px">
+      <div class="row">
+        ${isEdit ? '<button class="btn btn-ghost" id="mm-link-delete" style="color:var(--pink)">删除连线</button>' : ''}
+        <button class="btn btn-ghost" id="mm-link-cancel">取消</button>
+        <button class="btn btn-primary" id="mm-link-save">保存</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  const input = document.getElementById('mm-link-label');
+  input.focus(); input.setSelectionRange(input.value.length, input.value.length);
+  document.getElementById('mm-link-cancel').onclick = ()=>{ modal.remove(); setMmMode(null); };
+  const save = ()=>{
+    const label = document.getElementById('mm-link-label').value.trim();
+    mmSaveLink(from, to, label);
+    modal.remove();
+    setMmMode(null);
+  };
+  document.getElementById('mm-link-save').onclick = save;
+  input.onkeydown = (e)=>{ if(e.key==='Enter') save(); if(e.key==='Escape'){ modal.remove(); setMmMode(null); } };
+  if(isEdit){
+    document.getElementById('mm-link-delete').onclick = ()=>{
+      mmDeleteLink(from, to);
+      modal.remove();
+      setMmMode(null);
+    };
+  }
+  modal.onclick = (e)=>{ if(e.target===modal){ modal.remove(); setMmMode(null); } };
+}
+function mmSaveLink(from, to, label){
+  ensureMindmap();
+  const idx = store.mindmap.links.findIndex(function(l){
+    return (l.from===from && l.to===to) || (l.from===to && l.to===from);
+  });
+  if(idx >= 0){
+    store.mindmap.links[idx].label = label;
+  } else {
+    store.mindmap.links.push({from:from, to:to, label:label, manual:true});
+  }
+  saveStore();
+  renderMindmap();
+  toast(label ? '连线已保存' : '已连接两个节点','green');
+}
+function mmDeleteLink(from, to){
+  ensureMindmap();
+  store.mindmap.links = store.mindmap.links.filter(function(l){
+    return !((l.from===from && l.to===to) || (l.from===to && l.to===from));
+  });
+  saveStore();
+  renderMindmap();
+  toast('连线已删除');
+}
+function mmEditLinkClick(e, from, to){
+  e.stopPropagation();
+  setMmMode('edit');
+  const l = store.mindmap.links.find(function(l){ return (l.from===from && l.to===to) || (l.from===to && l.to===from); });
+  mmShowLinkModal(from, to, l ? l.label : '');
+}
+
+function setMmStatus(t){
+  const el = document.getElementById('mm-status');
+  if(el) el.textContent = t;
+}
+function initMindmap(){
+  const input = document.getElementById('mm-input');
+  const addBtn = document.getElementById('mm-add');
+  const linkBtn = document.getElementById('mm-ai-link');
+  const branchBtn = document.getElementById('mm-ai-branch');
+  const manualBtn = document.getElementById('mm-manual-link');
+  const editBtn = document.getElementById('mm-edit-link');
+  const clearBtn = document.getElementById('mm-clear');
+  if(input){
+    input.addEventListener('keydown', function(e){ if(e.key==='Enter'){ mmAddNode(input.value); input.value=''; } });
+  }
+  if(addBtn) addBtn.onclick = function(){ mmAddNode(input.value); if(input) input.value=''; };
+  if(linkBtn) linkBtn.onclick = mmAiLink;
+  if(branchBtn) branchBtn.onclick = mmAiBranch;
+  if(manualBtn) manualBtn.onclick = function(){ setMmMode('link'); };
+  if(editBtn) editBtn.onclick = function(){ setMmMode('edit'); };
+  if(clearBtn) clearBtn.onclick = mmClear;
+  renderMindmap();
+  renderCandidates();
+}
+
 function init(){
   // 备忘录入
   document.getElementById('memo-add-btn').onclick = addMemo;
@@ -2612,21 +3205,25 @@ function init(){
   updateConnectBtn();
 
   // 资讯刷新按钮
-  document.getElementById('news-refresh-btn').onclick = ()=>{ fetchNews(true); };
+  document.getElementById('news-refresh-btn').onclick = ()=>{ fetchNews('manual'); };
 
   // 资讯搜索
-  const searchInput = document.getElementById('news-search-input');
-  const searchClear = document.getElementById('news-search-clear');
-  let searchTimer;
-  searchInput.addEventListener('input', ()=>{
-    clearTimeout(searchTimer);
-    searchTimer = setTimeout(()=>{ renderNews(); }, 300);
-  });
-  searchClear.onclick = ()=>{
-    searchInput.value = '';
-    searchClear.classList.remove('visible');
-    renderNews();
-  };
+  const newsSearchInput = document.getElementById('news-search-input');
+  const newsSearchClear = document.getElementById('news-search-clear');
+  let newsSearchTimer;
+  if(newsSearchInput){
+    newsSearchInput.addEventListener('input', ()=>{
+      clearTimeout(newsSearchTimer);
+      newsSearchTimer = setTimeout(()=>{ renderNews(); }, 250);
+    });
+  }
+  if(newsSearchClear){
+    newsSearchClear.onclick = ()=>{
+      newsSearchInput.value = '';
+      newsSearchClear.classList.remove('visible');
+      renderNews();
+    };
+  }
 
   // 月经记录
   document.getElementById('period-add-btn').onclick = addPeriod;
@@ -2649,12 +3246,23 @@ function init(){
     aiCol.addEventListener('dragleave', function(){ aiCol.classList.remove('drop-target-active'); });
   }
 
+  // 新增：导航 / 搜索 / 收藏馆 / 思维导图
+  bindSidebar();
+  const favViewBtn = document.getElementById('news-fav-view-btn');
+  if(favViewBtn) favViewBtn.onclick = showFavView;
+  initMindmap();
+  document.querySelectorAll('.side-item[data-screen]').forEach(function(b){ b.classList.toggle('active', b.dataset.screen==='screen-memo'); });
   // 密码门(盖在所有内容之上);解锁后由 enterApp 调用 startApp 渲染
   initLockScreen();
 }
 
 // 解锁成功后:解密数据并渲染启动各项功能
 async function startApp(){
+  // 若本地没有 key,自动载入预置 key(打开即用)
+  if(BUILTIN_AI_TOKEN && !store.aiToken){
+    store.aiToken = BUILTIN_AI_TOKEN;
+    saveStore();
+  }
   updateConnectBtn();
   renderMemos();
   renderTodoBar();
